@@ -1,0 +1,15 @@
+{% extends 'listings/base.html' %} 
+
+{% block content %}
+<p>Nous sommes là pour vous aider.</p>
+
+<form action="" method="post" novalidate>
+<!-- génére automatiquement les balise input ! -->
+{% csrf_token %}
+<!-- {{ form }} pour afficher
+     le formulaire sur la même ligne -->
+     {{ form.as_p }} <!--pour afficher les formulaire en pile-->
+<input type="submit" value="Envoyer">
+</form>
+<form action=""></form>
+{% endblock %}

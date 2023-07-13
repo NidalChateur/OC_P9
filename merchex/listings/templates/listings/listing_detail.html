@@ -1,0 +1,20 @@
+{% extends 'listings/base.html' %} {% block content %}
+
+<h2>{{ listing.title }}</h2>
+
+<ul>
+  <!-- .get_genre_displaypermet d'afficher sur le site la clé 
+        et non la valeur abrégé stocké dansla BDD en de liste de valeur -->
+  <li>Type : {{ listing.get_type_display }}</li>
+  <li>Année de formation : {{ listing.year_formed }}</li>
+  <li>Sold : {{ listing.sold|yesno }}</li>
+
+  <li>Band : {{ listing.band }}</li>
+
+</ul>
+
+<p>{{ listing.description }}</p>
+
+<a href="{% url 'listing-list' %}">Retour à liste des listings</a>
+
+{% endblock %}
