@@ -25,7 +25,7 @@ from django.contrib.auth.views import (
     PasswordChangeDoneView,
     PasswordResetView,
 )
-
+from review.views import home
 from authentication.views import signup
 
 urlpatterns = [
@@ -52,4 +52,5 @@ urlpatterns = [
         ),
         name="password_change_done",
     ),
+    path("home/", home, name="home"),
 ]
