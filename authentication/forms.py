@@ -12,4 +12,5 @@ class SignupForm(UserCreationForm):
             "email",
             "first_name",
             "last_name",
+            "profil_photo"
         )

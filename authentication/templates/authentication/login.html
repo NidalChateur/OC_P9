@@ -5,5 +5,6 @@
     {% csrf_token %}
     <button type="submit">Se connecter</button>
 </form>
+<p><a href="{% url 'password_reset' %}">Mot de passe oublié</a></p>
 <p>Pas encore membre ? <a href="{% url 'signup' %}">Inscrivez-vous maintenant !</a></p>
 {% endblock content %}

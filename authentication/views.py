@@ -4,7 +4,6 @@ from django.contrib.auth import login
 # best way to import settings.py file
 from django.conf import settings
 
-
 from authentication import forms
 
 
@@ -21,5 +20,5 @@ def signup(request):
             login(request, user)
 
             return redirect(settings.LOGIN_REDIRECT_URL)
-    
-    return render(request,"authentication/signup.html",{"form": form})
+
+    return render(request, "authentication/signup.html", {"form": form})
