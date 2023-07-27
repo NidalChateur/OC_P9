@@ -28,7 +28,7 @@ from django.contrib.auth.views import (
     PasswordResetConfirmView,
     PasswordResetCompleteView,
 )
-from review.views import home
+from review.views import home, ticket_create, review_create
 from authentication.views import signup
 
 urlpatterns = [
@@ -55,7 +55,6 @@ urlpatterns = [
         ),
         name="password_change_done",
     ),
-    path("home/", home, name="home"),
     path(
         "password_reset/",
         PasswordResetView.as_view(
@@ -84,4 +83,7 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
+    path("home/", home, name="home"),
+    path("home/add_ticket/", ticket_create, name="ticket-create"),
+    path("home/add_review/", review_create, name="review-create"),
 ]

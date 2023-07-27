@@ -1,3 +1,9 @@
 * {
   color: purple;
 }
+
+table {
+  margin-top: 2%;
+  padding: 1%;
+  border: black 1px solid;
+}

@@ -1,4 +1,38 @@
-{% extends 'base.html' %} 
-{% block content %}
-<p>Bienvenue {{user}}, vous êtes connecté ! </p>
+{% extends 'base.html' %} {% block content %}
+<p>Bienvenue {{ user|upper }}, vous êtes connecté !</p>
+<a href="{% url 'ticket-create' %}">Demander une critique</a>
+<a href="{% url 'review-create' %}">Créer une critique</a>
+
+{% for ticket in tickets %}
+
+<table>
+  <tr>
+    <td>
+      <p>{{ticket.user|capfirst }} a demandé une critique. ({{ticket.time_created}})</p>
+      <p>{{ticket.title|capfirst }}</p>
+      <p>{{ticket.description|capfirst }}</p>
+      <p><a href="">Créer une critique</a></p>
+    </td>
+  </tr>
+</table>
+
+{% endfor %} 
+
+{% for review in reviews %}
+
+<table>
+  <tr>
+    <td>
+      <p>{{review.user|capfirst}} a publié une critique. ({{review.time_created}})</p>
+      <p>{{review.rating }}/5</p>
+      <p>Ticket - {{review.user|capfirst}}</p>
+      <p>{{review.headline|capfirst}}</p>
+      <p>{{review.body|capfirst}}</p>
+      <p><a href="">Créer une critique</a></p>
+    </td>
+  </tr>
+</table>
+
+{% endfor %}
+
 {% endblock content %}

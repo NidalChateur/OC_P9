@@ -143,5 +143,5 @@ LOGIN_REDIRECT_URL = "home"
 # Configuration pour l'envoi d'e-mails dans la console (pour le développement et le test)
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # litreview.django@gmail.com
-# Django75000
+# Django*****
 # litreview@litreview-394100.iam.gserviceaccount.com
