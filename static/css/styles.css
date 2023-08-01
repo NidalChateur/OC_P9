@@ -6,4 +6,21 @@ table {
   margin-top: 2%;
   padding: 1%;
   border: black 1px solid;
+  width: 40%;
+}
+.image {
+  width: 40%;
+}
+.profile_photo {
+  width: 10%;
+}
+/* id_rating correspond aux bouton radio */
+#id_rating {
+  width: 45%;
+  display: flex;
+  justify-content: space-around;
+}
+/* bouton submit */
+[type="submit"] {
+  color: red;
 }

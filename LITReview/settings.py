@@ -47,6 +47,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    # "django.middleware.timezone.TimezoneMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -110,7 +111,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "fr-fr"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = 'Europe/Paris'
+# TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
@@ -133,11 +135,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Path added to user model
 AUTH_USER_MODEL = "authentication.User"
 
-# redirect a disconnected user to "login"
+# redirect an user that have to login
 LOGIN_URL = "login"
 
 # redirect a connected user to the homepage
 LOGIN_REDIRECT_URL = "home"
+
+# redirect a disconnected user to "login"
+LOGOUT_REDIRECT_URL = LOGIN_URL
 
 
 # Configuration pour l'envoi d'e-mails dans la console (pour le développement et le test)
@@ -145,3 +150,9 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 # litreview.django@gmail.com
 # Django*****
 # litreview@litreview-394100.iam.gserviceaccount.com
+
+# uploaded images url
+MEDIA_URL = "/media/"
+
+# images path
+MEDIA_ROOT = BASE_DIR / "media/"

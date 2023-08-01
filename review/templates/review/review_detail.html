@@ -1,9 +1,7 @@
 {% extends 'base.html' %} {% block content %}
 
-<a href="{% url 'ticket_create' %}">Demander une critique</a>
-<a href="{% url 'review_create' %}">Créer une critique</a>
-
-{% for ticket in tickets %}
+<h1>Critique</h1>
+{% if review %}
 
 <table>
   <tr>
@@ -18,6 +16,7 @@
         {{ticket.time_edited|date:"H\hi"}}.
       </p>
       {% endif %}
+
       <p>{{ticket.title|capfirst }}</p>
       {% if ticket.description %}
       <p>{{ticket.description|capfirst }}</p>
@@ -41,30 +40,6 @@
     </td>
   </tr>
 </table>
-
-{% endfor %} 
-{% for review in reviews %}
-
-<table>
-  <tr>
-    <td>
-      <p>
-        {{review.user|capfirst}} a publié une critique.
-        ({{review.time_created}})
-      </p>
-      {% if review.time_edited %}
-      <p>
-        Critique modifiée le {{review.time_edited|date}} à
-        {{review.time_edited|date:"H\hi"}}.
-      </p>
-      {% endif %}
-      <p>{{review.headline|capfirst}} - {{review.rating }}/5</p>
-      <p>Ticket - {{review.user|capfirst}}</p>
-      <p>{{review.body|capfirst}}</p>
-      
-      <p><a href="">Créer une critique</a></p>
-    </td>
-  </tr>
-</table>
-
-{% endfor %} {% endblock content %}
+{% else %}
+<p>Aucune demande trouvée.</p>
+{% endif %} {% endblock content %}

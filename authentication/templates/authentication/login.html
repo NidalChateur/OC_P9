@@ -1,10 +1,13 @@
-{% extends "base.html" %} 
-{% block content %}
+{% extends "base.html" %} {% block content %}
+
 <form action="" method="POST">
-    {{ form.as_p }} 
-    {% csrf_token %}
-    <button type="submit">Se connecter</button>
+  {{ form.as_p }} {% csrf_token %}
+  <button type="submit">Se connecter</button>
 </form>
 <p><a href="{% url 'password_reset' %}">Mot de passe oublié</a></p>
-<p>Pas encore membre ? <a href="{% url 'signup' %}">Inscrivez-vous maintenant !</a></p>
+<p>
+  Pas encore membre ?
+  <a href="{% url 'signup' %}">Inscrivez-vous maintenant !</a>
+</p>
+
 {% endblock content %}

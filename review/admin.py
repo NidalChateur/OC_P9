@@ -8,3 +8,10 @@ class TicketAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Ticket, TicketAdmin)
+
+
+class ReviewAdmin(admin.ModelAdmin):
+    list_display = ("ticket", "user", "time_created")
+
+
+admin.site.register(Review, ReviewAdmin)

@@ -1,4 +1,4 @@
-{% load static %}
+{% load static %} {% load tz %}
 <!DOCTYPE html>
 <html lang="fr">
   <head>
@@ -11,13 +11,16 @@
     <header>
       <nav>
         {% if user.is_authenticated %}
+        <span>Vous êtes connecté en tant que {{ user|capfirst }}. </span>
         <a href="{% url 'home' %}">Flux</a>
-        <a href="">Posts</a>
+        <a href="{% url 'ticket_list' %}">Demandes</a>
+        <a href="{% url 'posts' %}">Posts</a>
         <a href="">Abonnements</a>
+        <a href="{% url 'profile' %}">Mon profil</a>
         <a href="{% url 'logout' %}">Se déconnecter</a>
         {% endif %}
+        <p><img src="{% static 'img/icon.png' %}" alt="LITRewiew icon" /></p>
       </nav>
-      <img src="{% static 'img/icon.png' %}" alt="LITRewiew icon" />
     </header>
 
     {% block content %}{% endblock content %}

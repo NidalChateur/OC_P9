@@ -1,8 +1,29 @@
 {% extends "base.html" %} {% block content %}
 <h1>Créer une critique</h1>
-<form action="" method="POST">
-  {% csrf_token %} 
-  {{ form.as_p }}
-  <button type="submit">Envoyer</button>
+<form action="" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  <table>
+    <tr>
+      <td>
+        <h3>Livre / Article</h3>
+        {% for field in ticket_form %}
+        <p><label for="{{ field.id_for_label }}">{{ field.label }}</label></p>
+        <p>{{ field }}</p>
+        {% endfor %}
+      </td>
+    </tr>
+  </table>
+  <table>
+    <tr>
+      <td>
+        <h3>Critique</h3>
+        {% for field in review_form %} 
+        <p><label for="{{ field.id_for_label }}">{{ field.label }}</label></p>
+        <p>{{ field }}</p>
+         {% endfor %}
+        <button type="submit">Publier</button>
+      </td>
+    </tr>
+  </table>
 </form>
 {% endblock content %}

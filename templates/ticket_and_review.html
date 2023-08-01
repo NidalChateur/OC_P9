@@ -1,0 +1,34 @@
+<table>
+  <tr>
+    <td>
+      <p>
+        {% if review.user == user %}Vous avez{% else %}{{review.user}} a
+        {% endif %} publié une critique {{review.time_created|date:"H\hi"}},
+        {{review.time_created|date}}
+      </p>
+
+      {% if review.time_edited %}
+      <p>
+        Modifié {{review.time_edited|date}} à
+        {{review.time_edited|date:"H\hi"}}.
+      </p>
+      {% endif %}
+
+      <p>{{review.headline|capfirst}} - {{review.star}}</p>
+
+      {% if review.body %}
+      <p>{{review.body|capfirst}}</p>
+      {% endif %}
+
+      {% include "ticket.html" %}
+
+      {% if review.user == user %}
+      <a href="">Modifier</a><a href="">Supprimer</a>
+      {% endif %}
+    </td>
+  </tr>
+</table>
+
+{% if review.user == review.ticket.user %}
+{% include "ticket.html" with outside="True" %}
+{% endif %}

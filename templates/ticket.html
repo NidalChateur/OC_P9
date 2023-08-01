@@ -1,0 +1,40 @@
+<table>
+  <tr>
+    <td>
+      <p>
+        {% if review.ticket.user == user %}Vous avez publié un ticket{% else %}
+        {{review.ticket.user}} a demandé une critique{% endif %}
+        {{review.ticket.time_created|date:"H\hi"}},
+        {{review.ticket.time_created|date}}
+      </p>
+
+      {% if review.ticket.time_edited %}
+      <p>
+        Modifié {{review.ticket.time_edited|date:"H\hi"}},
+        {{review.ticket.time_edited|date}}
+      </p>
+      {% endif %}
+      <p>{{review.ticket.title|capfirst}}</p>
+
+      {% if review.ticket.description %}
+      <p>{{review.ticket.description}}</p>
+      {% endif %} 
+      
+      {% if review.ticket.image %}
+      <p>
+        <img
+          src="{{review.ticket.image.url}}"
+          alt="{{review.ticket.title|capfirst}} image"
+        />
+      </p>
+      {% endif %}
+
+      {% if outside %}
+      {% if review.ticket.user == user %}
+      <a href="">Modifier</a><a href="">Supprimer</a>
+      {% endif %}
+      {% endif %}
+
+    </td>
+  </tr>
+</table>

@@ -8,11 +8,24 @@ class TicketForm(forms.ModelForm):
 
     class Meta:
         model = Ticket
-        fields = "__all__"
+        fields = ["title", "description", "image"]
+
 
 class ReviewForm(forms.ModelForm):
     """review form"""
 
     class Meta:
         model = Review
-        fields = "__all__"
+        fields = ["headline", "rating", "body"]
+
+    rating = forms.IntegerField(
+        widget=forms.RadioSelect(
+            choices=[(1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5")]
+        ),
+    )
+
+    def __init__(self, *args, **kwargs):
+        """change the label name"""
+        
+        super(ReviewForm, self).__init__(*args, **kwargs)
+        self.fields["rating"].label = "Note"

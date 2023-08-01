@@ -22,3 +22,22 @@ def signup(request):
             return redirect(settings.LOGIN_REDIRECT_URL)
 
     return render(request, "authentication/signup.html", {"form": form})
+
+
+def profile(request):
+    """profile view"""
+
+    return render(request, "authentication/profile.html")
+
+
+def profile_update(request):
+    """profile update view"""
+
+    form = forms.ProfileForm(instance=request.user)
+    if request.method == "POST":
+        form = forms.ProfileForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("profile")
+
+    return render(request, "authentication/profile_update.html", {"form": form})
