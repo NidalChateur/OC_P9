@@ -13,7 +13,6 @@
         {% if user.is_authenticated %}
         <span>Vous êtes connecté en tant que {{ user|capfirst }}. </span>
         <a href="{% url 'home' %}">Flux</a>
-        <a href="{% url 'ticket_list' %}">Demandes</a>
         <a href="{% url 'posts' %}">Posts</a>
         <a href="">Abonnements</a>
         <a href="{% url 'profile' %}">Mon profil</a>

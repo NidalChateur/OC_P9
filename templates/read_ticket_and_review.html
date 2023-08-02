@@ -1,3 +1,4 @@
+{% if review.user %}
 <table>
   <tr>
     <td>
@@ -20,15 +21,21 @@
       <p>{{review.body|capfirst}}</p>
       {% endif %}
 
-      {% include "ticket.html" %}
+      {% include "read_ticket.html" %}
 
       {% if review.user == user %}
-      <a href="">Modifier</a><a href="">Supprimer</a>
+      <p><button><a href="">Modifier la critique</a></button> <button><a href="">Supprimer la critique</a></button></p>
       {% endif %}
+
+      {% if review.user != user and not review.response  %}
+      {% endif %}
+
+
     </td>
   </tr>
 </table>
+{% endif %}
 
-{% if review.user == review.ticket.user %}
-{% include "ticket.html" with outside="True" %}
+{% if review.user == review.ticket.user or not review.user %}
+{% include "read_ticket.html" with outside="True" %}
 {% endif %}

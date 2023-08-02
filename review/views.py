@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
-from django.db.models import F, Case, When
+from django.db.models import F, Case, When, Q
 from django.db import models
 import flake8_html
 
@@ -12,52 +12,35 @@ from review.forms import TicketForm, ReviewForm
 FULL_STAR = "★"
 EMPTY_STAR = "☆"
 
-
+# en cours...
 @login_required
 def home(request):
     """homepage view"""
 
-    # ordered by the most recent date between 'time_created' and 'time_edited'
-    tickets = Ticket.objects.filter(user=request.user).order_by(
-        Case(
-            When(time_edited__gt=F("time_created"), then=F("time_edited")),
-            default=F("time_created"),
-            output_field=models.DateTimeField(),
-        ).desc()
-    )
-    # ordered by the most recent date between 'time_created' and 'time_edited'
-    reviews = Review.objects.filter(user=request.user).order_by(
-        Case(
-            When(time_edited__gt=F("time_created"), then=F("time_edited")),
-            default=F("time_created"),
-            output_field=models.DateTimeField(),
-        ).desc()
-    )
+    # ajouter les review des abonnements une fois réalisé.
+    reviews = Review.objects.filter(
+        Q(user=request.user) | Q(ticket__user=request.user)
+    ).order_by("-time_last_entry")
 
-    return render(request, "review/home.html", {"tickets": tickets, "reviews": reviews})
+    return render(request, "review/home.html", {"reviews": reviews})
 
 
 @login_required
 def posts(request):
     """posts view"""
 
-    reviews = Review.objects.filter(user=request.user)
+    reviews = Review.objects.filter(
+        Q(user=request.user) | Q(ticket__user=request.user)
+    ).order_by("-time_last_entry")
 
     return render(request, "review/posts.html", {"reviews": reviews})
 
 
 @login_required
 def ticket_list(request):
-    """tickets list of current user"""
+    """tickets list of the current user"""
 
-    # ordered by the most recent date between 'time_created' and 'time_edited'
-    tickets = Ticket.objects.filter(user=request.user).order_by(
-        Case(
-            When(time_edited__gt=F("time_created"), then=F("time_edited")),
-            default=F("time_created"),
-            output_field=models.DateTimeField(),
-        ).desc()
-    )
+    tickets = Ticket.objects.filter(user=request.user).order_by("-time_last_entry")
 
     return render(request, "review/ticket_list.html", {"tickets": tickets})
 
@@ -81,6 +64,7 @@ def ticket_create(request):
             ticket = form.save(commit=False)
             review = Review()
             ticket.user = request.user
+            ticket.time_created = timezone.now()
             review.ticket = ticket
             ticket.save()
             review.save()
@@ -135,7 +119,7 @@ def review_detail(request, review_id):
 
 @login_required
 def review_create(request):
-    """review creation view"""
+    """review creation view (ticket + review creation)"""
 
     if request.method == "POST":
         ticket_form = TicketForm(request.POST, request.FILES)

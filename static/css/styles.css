@@ -24,3 +24,9 @@ table {
 [type="submit"] {
   color: red;
 }
+
+button a {
+  text-decoration: none;
+  color: purple;
+}
+

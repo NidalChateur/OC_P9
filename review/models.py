@@ -1,3 +1,4 @@
+from unittest import TextTestRunner
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.db import models
@@ -11,8 +12,9 @@ class Ticket(models.Model):
     description = models.TextField(max_length=2048, blank=True, null=True)
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True, default=None)
-    time_created = models.DateTimeField(auto_now_add=True)
-    time_edited = models.DateTimeField(blank=True, null=True, default=None)
+    time_created = models.DateTimeField(null=True, default=None)
+    time_edited = models.DateTimeField(null=True, default=None)
+    time_last_entry = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
         return self.title
@@ -41,6 +43,14 @@ class Review(models.Model):
     )
     time_created = models.DateTimeField(null=True, default=None)
     time_edited = models.DateTimeField(null=True, default=None)
+    time_last_entry = models.DateTimeField(auto_now_add=True, null=True)
+
+    """ second review is filled when the current user adds his own review
+        to an existant review"""
+
+    second_review = models.ForeignKey(
+        to="self", on_delete=models.CASCADE, null=True, default=None
+    )
 
 
 """ class UserFollows(models.Model):

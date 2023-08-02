@@ -1,70 +1,13 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
 
-<a href="{% url 'ticket_create' %}">Demander une critique</a>
-<a href="{% url 'review_create' %}">Créer une critique</a>
+{% block content %}
 
-{% for ticket in tickets %}
+    {% include "create_menu.html" %}
 
-<table>
-  <tr>
-    <td>
-      <p>
-        {{ticket.user|capfirst }} a demandé une critique le
-        {{ticket.time_created|date}} à {{ticket.time_created|date:"H\hi"}}.
-      </p>
-      {% if ticket.time_edited %}
-      <p>
-        Demande modifiée le {{ticket.time_edited|date}} à
-        {{ticket.time_edited|date:"H\hi"}}.
-      </p>
-      {% endif %}
-      <p>{{ticket.title|capfirst }}</p>
-      {% if ticket.description %}
-      <p>{{ticket.description|capfirst }}</p>
-      {% endif %} {% if ticket.image %}
-      <p>
-        <img
-          src="{{ticket.image.url}}"
-          alt="{{ticket.title|capfirst }}"
-          class="image"
-        />
-      </p>
-      {% endif %} 
-      {% if ticket.user == user %}
-      <p>
-        <a href="{% url 'ticket_update' ticket.id %}">Modifier</a>
-      </p>
-      <p><a href="{% url 'ticket_delete' ticket.id %}">Supprimer</a></p>
-      {% endif %}
+    {% for review in reviews %}
 
-      <p><a href="">Créer une critique</a></p>
-    </td>
-  </tr>
-</table>
+      {% include "read_ticket_and_review.html" %}
 
-{% endfor %} 
-{% for review in reviews %}
+    {% endfor %} 
 
-<table>
-  <tr>
-    <td>
-      <p>
-        {{review.user|capfirst}} a publié une critique.
-        ({{review.time_created}})
-      </p>
-      {% if review.time_edited %}
-      <p>
-        Critique modifiée le {{review.time_edited|date}} à
-        {{review.time_edited|date:"H\hi"}}.
-      </p>
-      {% endif %}
-      <p>{{review.headline|capfirst}} - {{review.rating }}/5</p>
-      <p>Ticket - {{review.user|capfirst}}</p>
-      <p>{{review.body|capfirst}}</p>
-      
-      <p><a href="">Créer une critique</a></p>
-    </td>
-  </tr>
-</table>
-
-{% endfor %} {% endblock content %}
+{% endblock content %}
