@@ -2,12 +2,26 @@
   color: purple;
 }
 
-table {
+.review {
   margin-top: 2%;
   padding: 1%;
   border: black 1px solid;
   width: 40%;
 }
+.review .ticket{
+  width: 90%;
+}
+.review.form{
+  margin-top: 0;
+  border-top: none;
+}
+.ticket {
+  margin-top: 2%;
+  padding: 1%;
+  border: black 1px solid;
+  width: 40%;
+}
+/* les image des tickets */
 .image {
   width: 40%;
 }
@@ -22,11 +36,9 @@ table {
 }
 /* bouton submit */
 [type="submit"] {
-  color: red;
+  color: purple;
 }
 
 button a {
   text-decoration: none;
-  color: purple;
 }
-

@@ -1,14 +1,16 @@
+from typing import Collection, Iterable, Optional
 from unittest import TextTestRunner
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.db import models
 from django import forms
+from django.core.exceptions import ValidationError
 
 
 class Ticket(models.Model):
     """ticket model waiting for an user review"""
 
-    title = models.CharField(max_length=128, verbose_name="Titre")
+    title = models.CharField(max_length=128, verbose_name="Titre", unique=True)
     description = models.TextField(max_length=2048, blank=True, null=True)
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True, default=None)
@@ -18,6 +20,17 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.title
+
+"""     def validate_unique(self, exclude=None) -> None:
+        qs = Ticket.objects.filter(title=self.title)
+        if qs.exists():
+            raise ValidationError({"title": "Ce titre existe déjà."})
+
+        return super().validate_unique(exclude)
+
+    def save(self, *args, **kwargs) -> None:
+        self.validate_unique()
+        super(Ticket, self).save(*args, **kwargs) """
 
 
 class Review(models.Model):

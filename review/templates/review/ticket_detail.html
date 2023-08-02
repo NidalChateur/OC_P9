@@ -1,45 +1,26 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
 
-<h1>Demande de critique</h1>
-{% if ticket %}
+{% block content %}
 
-<table>
-  <tr>
-    <td>
-      <p>
-        {{ticket.user|capfirst }} a demandé une critique le
-        {{ticket.time_created|date}} à {{ticket.time_created|date:"H\hi"}}.
-      </p>
-      {% if ticket.time_edited %}
-      <p>
-        Demande modifiée le {{ticket.time_edited|date}} à
-        {{ticket.time_edited|date:"H\hi"}}.
-      </p>
-      {% endif %}
+  {% include "create_menu.html" %}
 
-      <p>{{ticket.title|capfirst }}</p>
-      {% if ticket.description %}
-      <p>{{ticket.description|capfirst }}</p>
-      {% endif %} {% if ticket.image %}
-      <p>
-        <img
-          src="{{ticket.image.url}}"
-          alt="{{ticket.title|capfirst }}"
-          class="image"
-        />
-      </p>
-      {% endif %} 
-      {% if ticket.user == user %}
-      <p>
-        <a href="{% url 'ticket_update' ticket.id %}">Modifier</a>
-      </p>
-      <p><a href="{% url 'ticket_delete' ticket.id %}">Supprimer</a></p>
-      {% endif %}
+  {% if review %}
 
-      <p><a href="">Créer une critique</a></p>
-    </td>
-  </tr>
-</table>
-{% else %}
-<p>Aucune demande trouvée.</p>
-{% endif %} {% endblock content %}
+    {% if review.user == user %}
+      <h1>Votre demande de critique</h1>
+    {% else %}
+      <h1>Demande de critique</h1>
+    {% endif %}
+
+
+    {% if review %}
+      {% include "read_ticket.html" with outside="True" %}
+    {% else %}
+      <p>Aucune critique trouvée.</p>
+    {% endif %}
+
+  {% else %}
+    <p>Aucune demande de critique trouvée.</p>
+  {% endif %}
+
+{% endblock content %}

@@ -1,7 +1,5 @@
 {% if review.user %}
-<table>
-  <tr>
-    <td>
+<div class="review">
       <p>
         {% if review.user == user %}Vous avez{% else %}{{review.user}} a
         {% endif %} publié une critique {{review.time_created|date:"H\hi"}},
@@ -28,14 +26,19 @@
       {% endif %}
 
       {% if review.user != user and not review.response  %}
+        <p><button><a href="">Créer une critique</a></button></p>
       {% endif %}
-
-
-    </td>
-  </tr>
-</table>
+</div>
 {% endif %}
 
-{% if review.user == review.ticket.user or not review.user %}
-{% include "read_ticket.html" with outside="True" %}
+{% if not home  %}
+  {% if review.user == review.ticket.user or not review.user %}
+    {% include "read_ticket.html" with outside="True" %}
+  {% endif %}
 {% endif %}
+
+{% if home and review.time_created != review.ticket.time_created %}
+  {% include "read_ticket.html" with outside="True" %}
+{% endif %}
+
+

@@ -1,17 +1,20 @@
-{% extends 'base.html' %} {% block content %}
+{% extends 'base.html' %} 
 
-<h1>Suppression de votre ticket</h1>
+{% block content %}
 
-<p>
-  Êtes-vous sûr de vouloir supprimer votre ticket pour :
-  <a href="{% url 'ticket_detail' ticket.id %}">{{ ticket.title }}</a> ?
-</p>
-<p>Les données de votre ticket seront définitivement perdues.</p>
+  <h1>Suppression de votre ticket</h1>
 
-<form action="" method="POST">
-  {% csrf_token %}
-  <input type="submit" value="Oui" />
-  <a href="{% url 'ticket_list' %}"><button>Non</button></a>
-</form>
+  <p>
+    Êtes-vous sûr de vouloir supprimer votre ticket pour :
+    <a href="{% url 'ticket_detail' ticket.id %}">{{ ticket.title }}</a> ?
+  </p>
+  
+  <p>Les données de votre ticket seront définitivement perdues.</p>
+
+  <form action="" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="Oui" />
+    <a href="{% url 'ticket_list' %}"><button>Non</button></a>
+  </form>
 
 {% endblock %}

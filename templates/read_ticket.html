@@ -1,40 +1,39 @@
-<table>
-  <tr>
-    <td>
-      <p>
-        {% if review.ticket.user == user %}Vous avez publié un ticket{% else %}
-        {{review.ticket.user}} a demandé une critique{% endif %}
-        {{review.ticket.time_created|date:"H\hi"}},
-        {{review.ticket.time_created|date}}
-      </p>
+<div class="ticket">
+  <p>
+    {% if review.ticket.user == user %}Vous avez publié un ticket{% else %}
+    {{review.ticket.user}} a demandé une critique{% endif %} à
+    {{review.ticket.time_created|date:"H\hi"}}, le
+    {{review.ticket.time_created|date}}
+  </p>
 
-      {% if review.ticket.time_edited %}
-      <p>
-        Modifié {{review.ticket.time_edited|date:"H\hi"}},
-        {{review.ticket.time_edited|date}}
-      </p>
-      {% endif %}
-      <p>{{review.ticket.title|capfirst}}</p>
+  {% if review.ticket.time_edited %}
+  <p>
+    Modifié {{review.ticket.time_edited|date:"H\hi"}},
+    {{review.ticket.time_edited|date}}
+  </p>
+  {% endif %}
+  <p>{{review.ticket.title|capfirst}}</p>
 
-      {% if review.ticket.description %}
-      <p>{{review.ticket.description}}</p>
-      {% endif %} 
-      
-      {% if review.ticket.image %}
-      <p>
-        <img
-          src="{{review.ticket.image.url}}"
-          alt="{{review.ticket.title|capfirst}} image"
-        />
-      </p>
-      {% endif %}
-
-      {% if outside %}
-      {% if review.ticket.user == user %}
-      <p><button><a href="">Modifier le ticket</a></button> <button><a href="">Supprimer le ticket</a></button></p>
-      {% endif %}
-      {% endif %}
-
-    </td>
-  </tr>
-</table>
+  {% if review.ticket.description %}
+  <p>{{review.ticket.description|capfirst}}</p>
+  {% endif %} {% if review.ticket.image %}
+  <p>
+    <img
+      src="{{review.ticket.image.url}}"
+      alt="{{review.ticket.title|capfirst}} image"
+      class="image"
+    />
+  </p>
+  {% endif %} {% if outside %} {% if review.ticket.user == user %}
+  <p>
+    <button><a href="">Modifier le ticket</a></button>
+    <button><a href="">Supprimer le ticket</a></button>
+  </p>
+  {% endif %} 
+	{% if not review.user %}
+		<p>
+			<button><a href="">Créer une critique</a></button>
+		</p>
+  {% endif %} 
+	{% endif %}
+</div>

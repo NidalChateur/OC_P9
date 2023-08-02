@@ -12,15 +12,18 @@ from review.forms import TicketForm, ReviewForm
 FULL_STAR = "★"
 EMPTY_STAR = "☆"
 
+
 # en cours...
 @login_required
 def home(request):
     """homepage view"""
 
     # ajouter les review des abonnements une fois réalisé.
-    reviews = Review.objects.filter(
-        Q(user=request.user) | Q(ticket__user=request.user)
-    ).order_by("-time_last_entry")
+    """     reviews = Review.objects.filter(
+            Q(user=request.user) | Q(ticket__user=request.user)
+        ).order_by("-time_last_entry") """
+    
+    reviews=Review.objects.all()
 
     return render(request, "review/home.html", {"reviews": reviews})
 
@@ -36,22 +39,26 @@ def posts(request):
     return render(request, "review/posts.html", {"reviews": reviews})
 
 
+# inutile ?
 @login_required
 def ticket_list(request):
     """tickets list of the current user"""
 
-    tickets = Ticket.objects.filter(user=request.user).order_by("-time_last_entry")
+    reviews = Review.objects.filter(ticket__user=request.user).order_by(
+        "-time_last_entry"
+    )
 
-    return render(request, "review/ticket_list.html", {"tickets": tickets})
+    return render(request, "review/ticket_list.html", {"reviews": reviews})
 
 
+# inutile ?
 @login_required
-def ticket_detail(request, ticket_id):
+def ticket_detail(request, review_id):
     """ticket view"""
 
-    ticket = get_object_or_404(Ticket, id=ticket_id)
+    review = get_object_or_404(Review, id=review_id)
 
-    return render(request, "review/ticket_detail.html", {"ticket": ticket})
+    return render(request, "review/ticket_detail.html", {"review": review})
 
 
 @login_required
@@ -69,7 +76,7 @@ def ticket_create(request):
             ticket.save()
             review.save()
 
-            return redirect("ticket_detail", ticket.id)
+            return redirect("ticket_detail", review.id)
 
     else:
         form = TicketForm()
@@ -110,7 +117,7 @@ def ticket_delete(request, ticket_id):
 
 @login_required
 def review_detail(request, review_id):
-    """review view"""
+    """review detail view"""
 
     review = get_object_or_404(Review, id=review_id)
 
@@ -118,7 +125,7 @@ def review_detail(request, review_id):
 
 
 @login_required
-def review_create(request):
+def ticket_review_create(request):
     """review creation view (ticket + review creation)"""
 
     if request.method == "POST":
@@ -135,7 +142,7 @@ def review_create(request):
             ticket.save()
             review.save()
 
-            return redirect("posts")
+            return redirect("review_detail", review.id)
 
     else:
         ticket_form = TicketForm()
@@ -143,6 +150,6 @@ def review_create(request):
 
     return render(
         request,
-        "review/review_create.html",
+        "review/ticket_review_create.html",
         {"ticket_form": ticket_form, "review_form": review_form},
     )
