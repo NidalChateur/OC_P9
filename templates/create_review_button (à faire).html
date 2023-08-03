@@ -1,0 +1,8 @@
+      <!-- si le créateur du ticket est différent de l'utilisateur courant -->
+      {% if review.ticket.user != user and not review.headline  %}
+        <p><button><a href="">Créer une critique</a></button></p>
+      {% endif %}
+      <!-- si le créateur du ticket est le même que l'utilisateur courant -->
+      {% if review.ticket.user == user and not review.self_review  %}
+      <p><button><a href="">Créer une critique</a></button></p>
+      {% endif %}

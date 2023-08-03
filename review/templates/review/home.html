@@ -2,6 +2,11 @@
 
 {% block content %}
 
+{% load custom_filters %}
+
+<!--  {% if review|is_instance_of_review %}
+      {% endif %} -->
+
   {% include "create_menu.html" %}
 
   {% for review in reviews %}
