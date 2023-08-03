@@ -28,7 +28,7 @@ class Ticket(models.Model):
 class Review(models.Model):
     """Book/article review model"""
 
-    ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE)
+    ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE, null=True)
     rating = models.IntegerField(
         verbose_name="Note",
         validators=[MinValueValidator(0), MaxValueValidator(5)],
@@ -56,6 +56,8 @@ class Review(models.Model):
     second_review = models.ForeignKey(
         to="self", on_delete=models.CASCADE, null=True, default=None
     )
+
+    
 
 
 """ class UserFollows(models.Model):

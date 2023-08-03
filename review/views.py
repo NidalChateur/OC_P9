@@ -13,7 +13,7 @@ FULL_STAR = "★"
 EMPTY_STAR = "☆"
 
 
-# en cours...
+# en cours...(ajouter filtre post abonnement et self post)
 @login_required
 def home(request):
     """homepage view"""
@@ -22,8 +22,8 @@ def home(request):
     """     reviews = Review.objects.filter(
             Q(user=request.user) | Q(ticket__user=request.user)
         ).order_by("-time_last_entry") """
-    
-    reviews=Review.objects.all()
+
+    reviews = Review.objects.all().order_by("-time_last_entry")
 
     return render(request, "review/home.html", {"reviews": reviews})
 

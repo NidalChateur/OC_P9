@@ -1,0 +1,26 @@
+{% if review.user or review.self_review %}
+
+	<div class="review_self_review">
+		{% include "1a_read_review.html" %}
+
+		{% include "1b_read_self_review.html" %}
+
+		{% include "1c_read_ticket.html" %}
+
+		{% include "1d_button_edit_review.html" %}
+
+		{% include "1e_button_create_review.html" %}
+	</div>
+
+{% else %}
+	{% include "1c_read_ticket.html" with outside="True" %}
+{% endif %}
+
+{% if posts %}
+	{% if review.user or review.self_review %}
+
+		{% include "1c_read_ticket.html" with outside="True" %}
+	
+	{% endif %}
+{% endif %}
+	

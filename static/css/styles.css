@@ -2,13 +2,13 @@
   color: purple;
 }
 
-.review {
+.review_self_review {
   margin-top: 2%;
   padding: 1%;
   border: black 1px solid;
   width: 40%;
 }
-.review .ticket{
+.review_self_review .ticket{
   width: 90%;
 }
 .review.form{

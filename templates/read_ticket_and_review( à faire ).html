@@ -45,9 +45,10 @@ tiers -->
    la vue post -->
 {% if not home  %}
   <!-- la self review est stocké dans review.self_user -->
-  {% if review.self_user %}
+  {% if review.self_review.user == user %}
     {% include "read_ticket.html" with outside="True" %}
   {% endif %}
+  
 {% endif %}
 
 

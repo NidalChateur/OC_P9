@@ -1,17 +1,14 @@
 {% extends 'base.html' %} 
 
-{% block content %}
-
 {% load custom_filters %}
 
-<!--  {% if review|is_instance_of_review %}
-      {% endif %} -->
+{% block content %}
 
   {% include "create_menu.html" %}
 
   {% for review in reviews %}
 
-    {% include "read_ticket_and_review.html" with home="True" %}
+    {% include "1_read.html" %}
 
   {% endfor %} 
 
