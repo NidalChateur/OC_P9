@@ -27,6 +27,9 @@ class Ticket(models.Model):
 
     def __str__(self):
         return f"{self.title}"
+    
+    def resize_image(self):
+        pass
 
     def save(self, *args, **kwargs):
         # modification time

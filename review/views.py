@@ -10,8 +10,6 @@ from review.models import Ticket, Review, SelfReview
 from review.forms import TicketForm, ReviewForm, SelfReviewForm
 
 
-
-
 # en cours...(ajouter filtre post abonnement et self post)
 @login_required
 def home(request):
@@ -179,7 +177,7 @@ def ticket_self_review_create(request):
 # OK
 @login_required
 def self_review_create(request, review_id):
-    """ self review creation """
+    """self review creation"""
 
     review = get_object_or_404(Review, id=review_id)
 
@@ -211,7 +209,7 @@ def self_review_create(request, review_id):
 
 @login_required
 def review_create(request, review_id):
-    """ tierce review creation """
+    """tierce review creation"""
 
     review = get_object_or_404(Review, id=review_id)
 
@@ -242,9 +240,10 @@ def review_create(request, review_id):
 
     return redirect("forbidden_permission")
 
+
 @login_required
 def review_delete(request, review_id):
-    """ delete tierce review """
+    """delete tierce review"""
 
     review = get_object_or_404(Review, id=review_id)
 
@@ -254,6 +253,8 @@ def review_delete(request, review_id):
             review.rating = None
             review.headline = None
             review.body = None
+            review.time_created = None
+            review.time_edited = None
 
             review.save()
 
@@ -263,17 +264,16 @@ def review_delete(request, review_id):
 
     return redirect("forbidden_permission")
 
+
 @login_required
 def self_review_delete(request, review_id):
-    """ delete self review """
+    """delete self review"""
 
     review = get_object_or_404(Review, id=review_id)
 
-    if review.self_review == request.user:
+    if review.self_review.user == request.user:
         if request.method == "POST":
-            review.self_review = None
-
-            review.save()
+            review.self_review.delete()
 
             return redirect("home")
 
