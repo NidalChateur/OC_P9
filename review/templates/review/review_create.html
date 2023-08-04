@@ -1,0 +1,24 @@
+{% extends "base.html" %} 
+
+{% block content %} 
+
+    <div class="review">
+        <h3>Vous êtes en train de poster en réponse à</h3>
+        {% include "1c_read_ticket.html" %}
+    </div>
+    
+
+    <div class="review_form">
+        <form action="" method="post">
+            {% csrf_token %}
+
+            <h3>Critique</h3>
+            {% for field in review_form %}
+                <p><label for="{{ field.id_for_label }}">{{ field.label }}</label></p>
+                <p>{{ field }}</p>
+            {% endfor %}
+            <button type="submit">Publier</button>
+        </form>
+    </div>
+
+{% endblock content %}

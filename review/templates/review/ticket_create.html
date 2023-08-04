@@ -3,10 +3,17 @@
 {% block content %}
 
   <h1>Créer un nouveau ticket</h1>
-  <form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %} 
-    {{ form.as_p }}
-    <button type="submit">Publier</button>
-  </form>
   
+  <div class="ticket">
+    <form action="" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <h3>Livre / Article</h3>
+      {% for field in form %}
+        <p><label for="{{ field.id_for_label }}">{{ field.label }}</label></p>
+        <p>{{ field }}</p>
+      {% endfor %}
+      <button type="submit">Publier</button>
+    </form>
+  </div>
+
 {% endblock content %}

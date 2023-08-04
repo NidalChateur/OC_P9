@@ -1,20 +1,29 @@
 * {
   color: purple;
 }
-
-.review_self_review {
+.comment {
+  border: black 1px dotted;
+  padding: 1%;
+  width: 90%;
+  margin-bottom: 1%;
+}
+.review {
   margin-top: 2%;
   padding: 1%;
   border: black 1px solid;
   width: 40%;
 }
-.review_self_review .ticket{
+.review .ticket {
   width: 90%;
 }
-.review.form{
+.review_form {
   margin-top: 0;
+  border: black 1px solid;
   border-top: none;
+  padding: 1%;
+  width: 40%;
 }
+
 .ticket {
   margin-top: 2%;
   padding: 1%;

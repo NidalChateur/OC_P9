@@ -1,6 +1,6 @@
 from django import forms
 
-from review.models import Ticket, Review
+from review.models import Ticket, Review, SelfReview
 
 
 class TicketForm(forms.ModelForm):
@@ -26,6 +26,20 @@ class ReviewForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         """change the label name"""
-        
+
         super(ReviewForm, self).__init__(*args, **kwargs)
         self.fields["rating"].label = "Note"
+
+
+class SelfReviewForm(forms.ModelForm):
+    """review form"""
+
+    class Meta:
+        model = SelfReview
+        fields = ["headline", "rating", "body"]
+
+    rating = forms.IntegerField(
+        widget=forms.RadioSelect(
+            choices=[(1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5")]
+        ),
+    )

@@ -1,5 +1,5 @@
 {% if review.user %}
-  <div class="review">
+  <div class="comment">
     <p>
       {% if review.user == user %}Vous avez{% else %}{{review.user}} a
       {% endif %} publié une critique {{review.time_created|date:"H\hi"}},

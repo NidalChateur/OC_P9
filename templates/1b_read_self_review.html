@@ -1,5 +1,5 @@
 {% if review.self_review %}
-<div class="self_review">
+<div class="comment">
     <p>
         {% if review.self_review.user == user %}Vous avez{% else %}{{review.self_review.user}} a
         {% endif %} publié une critique {{review.self_review.time_created|date:"H\hi"}},
@@ -13,10 +13,10 @@
       </p>
       {% endif %}
 
-      <p>{{review.headline|capfirst}} - {{review.star}}</p>
+      <p>{{review.self_review.headline|capfirst}} - {{review.self_review.star}}</p>
 
-      {% if review.body %}
-      <p>{{review.body|capfirst}}</p>
+      {% if review.self_review.body %}
+        <p>{{review.self_review.body|capfirst}}</p>
       {% endif %}
 </div>
 {% endif %}
