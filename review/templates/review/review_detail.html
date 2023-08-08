@@ -1,0 +1,19 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+  {% if review.user == user or review.self_review.user == user %}
+    <h1>Votre critique</h1>
+  {% else %}
+    <h1>Critique</h1>
+  {% endif %}
+
+  {% include "create_menu.html" %}
+
+  {% if review %}
+    {% include "1_read.html" %}
+  {% else %}
+    <p>Aucune critique trouvée.</p>
+  {% endif %}
+
+{% endblock content %}

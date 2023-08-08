@@ -1,0 +1,34 @@
+{% extends "base.html" %} 
+
+{% block content %} 
+
+	{% block title %}
+		<!-- <h2>Créer votre critique</h2> -->
+		<!-- <h2>Modifier votre critique</h2> -->
+	{% endblock title %}
+
+	<div class="review">
+		<h3>Vous êtes en train de poster en réponse à</h3>
+		{% include "1c_read_ticket.html" %}
+	</div>
+	
+
+	<div class="review_form">
+		<form method="post">
+			{% csrf_token %}
+
+			<h3>Critique</h3>
+
+			{% for field in form %}
+					<p><label for="{{ field.id_for_label }}">{{ field.label }}</label></p>
+					<p>{{ field }}</p>
+			{% endfor %}
+
+			{% block button %}
+				<!-- <button type="submit">Enregistrer</button> -->
+				<!-- <button type="submit">Publier</button> -->
+			{% endblock button %}
+		</form>
+	</div>
+
+{% endblock content %}

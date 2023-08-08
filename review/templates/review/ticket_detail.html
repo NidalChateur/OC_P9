@@ -1,0 +1,20 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+  {% if review.ticket.user == user %}
+    <h1>Votre demande de critique</h1>
+  {% else %}
+    <h1>Demande de critique</h1>
+  {% endif %}
+
+  {% include "create_menu.html" %}
+
+
+  {% if review %}
+    {% include "1_read.html" %}
+  {% else %}
+    <p>Aucune demande de critique trouvée.</p>
+  {% endif %}
+
+{% endblock content %}

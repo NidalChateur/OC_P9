@@ -1,0 +1,52 @@
+* {
+  color: purple;
+}
+.comment {
+  border: black 1px dotted;
+  padding: 1%;
+  width: 90%;
+  margin-bottom: 1%;
+}
+.review {
+  margin-top: 2%;
+  padding: 1%;
+  border: black 1px solid;
+  width: 40%;
+}
+.review .ticket {
+  width: 90%;
+}
+.review_form {
+  margin-top: 0;
+  border: black 1px solid;
+  border-top: none;
+  padding: 1%;
+  width: 40%;
+}
+.ticket {
+  margin-top: 2%;
+  padding: 1%;
+  border: black 1px solid;
+  width: 40%;
+}
+/* les image des tickets */
+.image {
+  width: 40%;
+}
+.profile_photo {
+  width: 10%;
+}
+/* id_rating correspond aux bouton radio */
+#id_rating {
+  width: 45%;
+  display: flex;
+  justify-content: space-around;
+}
+/* bouton submit */
+[type="submit"] {
+  color: purple;
+}
+
+button a {
+  text-decoration: none;
+}

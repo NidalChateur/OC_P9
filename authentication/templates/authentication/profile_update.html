@@ -1,0 +1,13 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+  <section>
+    <h2>Modification du profil</h2>
+
+    <form method="post" enctype="multipart/form-data">
+      {{ form.as_p }} 
+      {% csrf_token %}
+      <button type="submit">Enregistrer</button>
+    </form>
+  </section>
+{% endblock content %}

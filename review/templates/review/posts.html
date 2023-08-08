@@ -1,0 +1,13 @@
+{% extends 'review/base_home_posts.html' %} 
+
+{% block title %}
+
+	<h1>Vos posts</h1>
+	
+{% endblock title %}
+
+{% block read %}
+
+	{% include "1_read.html" with posts="True" %}
+
+{% endblock read %}

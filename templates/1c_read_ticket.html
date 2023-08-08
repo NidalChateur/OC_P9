@@ -1,0 +1,48 @@
+<div class="ticket">
+  <p>
+    {% if review.ticket.user == user %}
+      Vous avez
+    {% else %}
+      {{review.ticket.user|capfirst}} a 
+    {% endif %}  
+    demandé une critique à {{review.ticket.time_created|date:"H\hi"}}, 
+    le {{review.ticket.time_created|date}}
+  </p>
+
+  {% if review.ticket.time_edited %}
+    <p>
+      Modifié à {{review.ticket.time_edited|date:"H\hi"}},
+      le {{review.ticket.time_edited|date}}
+    </p>
+  {% endif %}
+
+  <p>{{review.ticket.title|capfirst}}</p>
+
+  {% if review.ticket.description %}
+    <p>{{review.ticket.description|capfirst}}</p>
+  {% endif %} 
+  
+  {% if review.ticket.image %}
+    <p>
+      <img
+        src="{{review.ticket.image.url}}"
+        alt="{{review.ticket.title|capfirst}} image"
+        class="image"
+      />
+    </p>
+  {% endif %} 
+  
+  {% if button %} 
+    {% if review.ticket.user == user %}
+      <p>
+        <button>
+          <a href="{% url 'ticket_update' review.ticket.id %}">Modifier le ticket</a>
+        </button>
+        <button>
+          <a href="{% url 'ticket_delete' review.ticket.id %}">Supprimer le ticket</a>
+        </button>
+      </p>
+    {% endif %} 
+    {% include "1e_button_create_review.html" %}
+	{% endif %}
+</div>
