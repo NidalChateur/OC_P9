@@ -1,14 +1,13 @@
-{% extends "base.html" %} {% block content %}
-<h1>Modifier votre ticket</h1>
-<div class="ticket">
-  <form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    <h3>Livre / Article</h3>
-    {% for field in form %}
-      <p><label for="{{ field.id_for_label }}">{{ field.label }}</label></p>
-      <p>{{ field }}</p>
-    {% endfor %}
-    <button type="submit">Enregistrer</button>
-  </form>
-</div>
-{% endblock content %}
+{% extends "review/ticket_form.html" %}
+
+{% block title %}
+
+  <h1>Modifier votre ticket</h1>
+
+{% endblock title %}
+
+{% block button %}
+
+  <button type="submit">Enregistrer</button>
+
+{% endblock button %}

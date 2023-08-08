@@ -1,19 +1,14 @@
-{% extends 'base.html' %} 
+{% extends 'review/delete_form.html' %} 
 
-{% block content %}
+{% block title %}
 
   <h1>Suppression de votre critique</h1>
 
-  <p>
-    Êtes-vous sûr de vouloir supprimer votre critique sur 
-    <a href="{% url 'ticket_detail' review.ticket.id %}">{{ review.ticket.title }}</a> ? 
-  </p>
-  
-  <p>Les données de votre ticket seront définitivement perdues.</p>
+{% endblock title %}
 
-  <form action="" method="POST">
-    {% csrf_token %}
-    <input type="submit" value="Supprimer" />
-  </form>
+{% block product %}
 
-{% endblock %}
+  critique sur 
+  <a href="{% url 'ticket_detail' review.ticket.id %}">{{ review.ticket.title }}</a> 
+
+{% endblock product %}

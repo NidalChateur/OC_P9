@@ -6,8 +6,8 @@ from django.db import models
 import flake8_html
 
 
-from review.models import Ticket, Review, SelfReview
-from review.forms import TicketForm, ReviewForm, SelfReviewForm
+from review.models import Ticket, Review
+from review.forms import TicketForm, ReviewForm
 
 
 # en cours...(ajouter filtre post abonnement et self post)
@@ -20,7 +20,9 @@ def home(request):
             Q(user=request.user) | Q(ticket__user=request.user)
         ).order_by("-time_last_entry") """
 
-    reviews = Review.objects.all().order_by("-time_last_entry")
+    reviews = Review.objects.filter(self_review_instance=False).order_by(
+        "-time_last_entry"
+    )
 
     return render(request, "review/home.html", {"reviews": reviews})
 
@@ -37,30 +39,32 @@ def posts(request):
     """posts view"""
 
     reviews = Review.objects.filter(
-        Q(user=request.user) | Q(ticket__user=request.user)
+        Q(self_review_instance=False)
+        & (Q(user=request.user) | Q(ticket__user=request.user))
     ).order_by("-time_last_entry")
 
     return render(request, "review/posts.html", {"reviews": reviews})
 
 
-# inutile ?
+# inutile ? car il y a des reviews ! > faire apparaître uniquement les tickets
+# et faire apparaître tous les tickets...
 @login_required
 def ticket_list(request):
     """tickets list of the current user"""
 
-    reviews = Review.objects.filter(ticket__user=request.user).order_by(
+    reviews = Review.objects.filter(self_review_instance=False).order_by(
         "-time_last_entry"
     )
 
     return render(request, "review/ticket_list.html", {"reviews": reviews})
 
 
-# OK inutile ?
+# OK
 @login_required
-def ticket_detail(request, review_id):
+def ticket_detail(request, ticket_id):
     """ticket view"""
 
-    review = get_object_or_404(Review, id=review_id)
+    review = get_object_or_404(Review, ticket__id=ticket_id, self_review_instance=False)
 
     return render(request, "review/ticket_detail.html", {"review": review})
 
@@ -90,7 +94,7 @@ def ticket_create(request):
             ticket.save()
             review.save()
 
-            return redirect("ticket_detail", review.id)
+            return redirect("ticket_detail", ticket.id)
 
     else:
         form = TicketForm()
@@ -143,7 +147,7 @@ def ticket_self_review_create(request):
 
     if request.method == "POST":
         ticket_form = TicketForm(request.POST, request.FILES)
-        self_review_form = SelfReviewForm(request.POST)
+        self_review_form = ReviewForm(request.POST)
 
         if all([ticket_form.is_valid(), self_review_form.is_valid()]):
             """Review() contains Ticket() and SelfReview() fields"""
@@ -152,6 +156,7 @@ def ticket_self_review_create(request):
 
             ticket = ticket_form.save(commit=False)
             selfReview = self_review_form.save(commit=False)
+            selfReview.self_review_instance = True
 
             ticket.user = selfReview.user = request.user
             review.ticket = selfReview.ticket = ticket
@@ -165,7 +170,7 @@ def ticket_self_review_create(request):
 
     else:
         ticket_form = TicketForm()
-        self_review_form = SelfReviewForm()
+        self_review_form = ReviewForm()
 
     return render(
         request,
@@ -183,11 +188,13 @@ def self_review_create(request, review_id):
 
     if (review.ticket.user == request.user) and not review.self_review:
         if request.method == "POST":
-            self_review_form = SelfReviewForm(request.POST)
+            form = ReviewForm(request.POST)
 
-            if self_review_form.is_valid():
-                selfReview = self_review_form.save(commit=False)
+            if form.is_valid():
+                selfReview = form.save(commit=False)
+                selfReview.self_review_instance = True
                 selfReview.user = request.user
+                selfReview.ticket = review.ticket
                 review.self_review = selfReview
 
                 selfReview.save()
@@ -196,12 +203,55 @@ def self_review_create(request, review_id):
                 return redirect("review_detail", review.id)
 
         else:
-            self_review_form = SelfReviewForm()
+            form = ReviewForm()
 
         return render(
             request,
             "review/review_create.html",
-            {"review_form": self_review_form, "review": review},
+            {"form": form, "review": review},
+        )
+
+    return redirect("forbidden_permission")
+
+
+# OK
+@login_required
+def self_review_delete(request, review_id):
+    """delete self review"""
+
+    review = get_object_or_404(Review, id=review_id)
+
+    if review.self_review.user == request.user:
+        if request.method == "POST":
+            review.self_review.delete()
+
+            if review.headline:
+                return redirect("review_detail", review.id)
+
+            return redirect("ticket_detail", review.ticket.id)
+
+        return render(request, "review/review_delete.html", {"review": review})
+
+    return redirect("forbidden_permission")
+
+
+@login_required
+def self_review_update(request, review_id):
+    """self review update"""
+
+    review = get_object_or_404(Review, id=review_id)
+
+    if review.self_review.user == request.user:
+        form = ReviewForm(instance=review.self_review)
+        if request.method == "POST":
+            form = ReviewForm(request.POST, instance=review.self_review)
+            if form.is_valid():
+                form.save()
+
+                return redirect("review_detail", review.id)
+
+        return render(
+            request, "review/review_update.html", {"review": review, "form": form}
         )
 
     return redirect("forbidden_permission")
@@ -215,27 +265,27 @@ def review_create(request, review_id):
 
     if (review.ticket.user != request.user) and not review.user:
         if request.method == "POST":
-            review_form = ReviewForm(request.POST)
+            form = ReviewForm(request.POST)
 
-            if review_form.is_valid():
+            if form.is_valid():
                 # tierce_review = review_form.save(commit=False)
 
                 review.user = request.user
-                review.rating = review_form.cleaned_data["rating"]
-                review.headline = review_form.cleaned_data["headline"]
-                review.body = review_form.cleaned_data["body"]
+                review.rating = form.cleaned_data["rating"]
+                review.headline = form.cleaned_data["headline"]
+                review.body = form.cleaned_data["body"]
 
                 review.save()
 
                 return redirect("review_detail", review.id)
 
         else:
-            review_form = ReviewForm()
+            form = ReviewForm()
 
         return render(
             request,
             "review/review_create.html",
-            {"review_form": review_form, "review": review},
+            {"form": form, "review": review},
         )
 
     return redirect("forbidden_permission")
@@ -258,7 +308,10 @@ def review_delete(request, review_id):
 
             review.save()
 
-            return redirect("home")
+            if review.self_review:
+                return redirect("review_detail", review.id)
+
+            return redirect("ticket_detail", review.ticket.id)
 
         return render(request, "review/review_delete.html", {"review": review})
 
@@ -266,17 +319,22 @@ def review_delete(request, review_id):
 
 
 @login_required
-def self_review_delete(request, review_id):
-    """delete self review"""
+def review_update(request, review_id):
+    """review update"""
 
     review = get_object_or_404(Review, id=review_id)
 
-    if review.self_review.user == request.user:
+    if review.user == request.user:
+        form = ReviewForm(instance=review)
         if request.method == "POST":
-            review.self_review.delete()
+            form = ReviewForm(request.POST, instance=review)
+            if form.is_valid():
+                form.save()
 
-            return redirect("home")
+                return redirect("review_detail", review.id)
 
-        return render(request, "review/review_delete.html", {"review": review})
+        return render(
+            request, "review/review_update.html", {"review": review, "form": form}
+        )
 
     return redirect("forbidden_permission")

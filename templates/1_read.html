@@ -13,13 +13,13 @@
 	</div>
 
 {% else %}
-	{% include "1c_read_ticket.html" with outside="True" %}
+	{% include "1c_read_ticket.html" with button="True" %}
 {% endif %}
 
 {% if posts %}
 	{% if review.user or review.self_review %}
 		{% if review.ticket.user == user %}
-			{% include "1c_read_ticket.html" with outside="True" %}
+			{% include "1c_read_ticket.html" with button="True" %}
 		{% endif %}
 	{% endif %}
 {% endif %}

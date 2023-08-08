@@ -1,22 +1,14 @@
-{% extends 'base.html' %} 
+{% extends 'review/base_home_posts.html' %} 
 
-{% block content %}
+{% block title %}
+
+  <h1>Les demandes de critiques</h1>
+  
+{% endblock title %}
 
 
-  <h1>Vos demandes de critiques</h1>
+{% block read %}
 
-  {% include "create_menu.html" %}
+  {% include "1c_read_ticket.html" with button="True" %}
 
-  {% if reviews %}
-
-    {% for review in reviews %}
-
-      {% include "1_read.html" with outside="True" %}
-
-    {% endfor %}
-
-  {% else %}
-    <p>Aucune demande de critique trouvée.</p> 
-  {% endif %} 
-
-{% endblock content %}
+{% endblock read %}

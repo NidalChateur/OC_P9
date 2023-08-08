@@ -1,13 +1,21 @@
 {% if review.user == user %}
-    <p>
-    <button><a href="">Modifier la critique</a></button>
-    <button><a href="{% url 'review_delete' review.id %}">Supprimer la critique</a></button>
-    </p>
+	<p>
+		<button>
+				<a href="{% url 'review_update' review.id %}">Modifier la critique</a>
+		</button>
+		<button>
+				<a href="{% url 'review_delete' review.id %}">Supprimer la critique</a>
+		</button>
+	</p>
 {% endif %}
 
 {% if review.self_review.user == user %}
-    <p>
-    <button><a href="">Modifier la critique</a></button>
-    <button><a href="{% url 'self_review_delete' review.id %}">Supprimer la critique</a></button>
-    </p>
+	<p>
+		<button>
+				<a href="{% url 'self_review_update' review.id %}">Modifier la critique</a>
+		</button>
+		<button>
+				<a href="{% url 'self_review_delete' review.id %}">Supprimer la critique</a>
+		</button>
+  </p>
 {% endif %}

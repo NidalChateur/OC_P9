@@ -1,15 +1,7 @@
-{% extends 'base.html' %} 
+{% extends 'review/base_home_posts.html' %} 
 
-{% load custom_filters %}
-
-{% block content %}
-
-  {% include "create_menu.html" %}
-
-  {% for review in reviews %}
+{% block read %}
 
     {% include "1_read.html" %}
 
-  {% endfor %} 
-
-{% endblock content %}
+{% endblock read %}

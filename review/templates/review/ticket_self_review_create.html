@@ -3,23 +3,26 @@
 {% block content %}
 
   <h1>Créer une critique</h1>
-  <form action="" method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
+
     <div class="ticket">
       <h3>Livre / Article</h3>
       {% for field in ticket_form %}
-      <p><label for="{{ field.id_for_label }}">{{ field.label }}</label></p>
-      <p>{{ field }}</p>
+        <p><label for="{{ field.id_for_label }}">{{ field.label }}</label></p>
+        <p>{{ field }}</p>
       {% endfor %}
     </div>
+
     <div class="review_form">
       <h3>Critique</h3>
       {% for field in review_form %}
-      <p><label for="{{ field.id_for_label }}">{{ field.label }}</label></p>
-      <p>{{ field }}</p>
+        <p><label for="{{ field.id_for_label }}">{{ field.label }}</label></p>
+        <p>{{ field }}</p>
       {% endfor %}
       <button type="submit">Publier</button>
     </div>
+
   </form>
 
 {% endblock content %}

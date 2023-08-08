@@ -1,21 +1,13 @@
-{% extends 'base.html' %} 
+{% extends 'review/base_home_posts.html' %} 
 
-{% block content %}
+{% block title %}
 
 	<h1>Vos posts</h1>
+	
+{% endblock title %}
 
-	{% include "create_menu.html" %}
+{% block read %}
 
-	{% if reviews %}
+	{% include "1_read.html" with posts="True" %}
 
-		{% for review in reviews %}
-
-			{% include "1_read.html" with posts="True" %}
-
-		{% endfor %}
-		
-	{% else %}
-			<p>Vous n'avez publié aucun post.</p> 
-	{% endif %}
-
-{% endblock content %}
+{% endblock read %}

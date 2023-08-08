@@ -1,23 +1,30 @@
-{% extends 'base.html' %} {% block content %} {% load static %}
-<h2>Mon profil</h2>
-{% if user.photo %}
-<p>
-  <img src="{{user.photo.url}}" alt="profile_photo" class="profile_photo" />
-</p>
-{% else %}
-<p>
-  <img
-    src="{% static 'img/default_profile.png' %}"
-    alt=""
-    class="profile_photo"
-  />
-</p>
-{% endif %}
-<p>Prénom : {{user.first_name|capfirst}}</p>
-<p>Nom de famille : {{user.last_name|capfirst}}</p>
-<p>Adresse électronique : {{user.email}}</p>
+{% extends 'base.html' %} 
 
-<p><a href="{% url 'profile_update' %}">Modifier mon profil</a></p>
-<p><a href="{% url 'password_change' %}">Changer de mot de passe</a></p>
+{% block content %} 
+
+  {% load static %}
+
+  <h2>Mon profil</h2>
+
+  {% if user.photo %}
+    <p>
+      <img src="{{user.photo.url}}" alt="profile_photo" class="profile_photo" />
+    </p>
+  {% else %}
+    <p>
+      <img
+        src="{% static 'img/default_profile.png' %}"
+        alt=""
+        class="profile_photo"
+      />
+    </p>
+  {% endif %}
+  
+  <p>Prénom : {{user.first_name|capfirst}}</p>
+  <p>Nom de famille : {{user.last_name|capfirst}}</p>
+  <p>Adresse électronique : {{user.email}}</p>
+
+  <p><a href="{% url 'profile_update' %}">Modifier mon profil</a></p>
+  <p><a href="{% url 'password_change' %}">Changer de mot de passe</a></p>
 
 {% endblock content %}

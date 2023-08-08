@@ -2,7 +2,7 @@
 
 {% block content %}
 
-  {% if review.user == user %}
+  {% if review.user == user or review.self_review.user == user %}
     <h1>Votre critique</h1>
   {% else %}
     <h1>Critique</h1>

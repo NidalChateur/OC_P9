@@ -1,6 +1,6 @@
 from django import forms
 
-from review.models import Ticket, Review, SelfReview
+from review.models import Ticket, Review
 
 
 class TicketForm(forms.ModelForm):
@@ -20,7 +20,7 @@ class ReviewForm(forms.ModelForm):
 
     rating = forms.IntegerField(
         widget=forms.RadioSelect(
-            choices=[(1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5")]
+            choices=[(0, "0"), (1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5")]
         ),
     )
 
@@ -29,17 +29,3 @@ class ReviewForm(forms.ModelForm):
 
         super(ReviewForm, self).__init__(*args, **kwargs)
         self.fields["rating"].label = "Note"
-
-
-class SelfReviewForm(forms.ModelForm):
-    """review form"""
-
-    class Meta:
-        model = SelfReview
-        fields = ["headline", "rating", "body"]
-
-    rating = forms.IntegerField(
-        widget=forms.RadioSelect(
-            choices=[(1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5")]
-        ),
-    )

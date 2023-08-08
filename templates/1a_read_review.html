@@ -1,16 +1,21 @@
 {% if review.user %}
   <div class="comment">
     <p>
-      {% if review.user == user %}Vous avez{% else %}{{review.user}} a
-      {% endif %} publié une critique {{review.time_created|date:"H\hi"}},
-      {{review.time_created|date}}
+      {% if review.user == user %}
+        Vous avez
+      {% else %}
+        {{review.user|capfirst}} a
+      {% endif %} 
+      publié une critique à {{review.time_created|date:"H\hi"}},
+      le {{review.time_created|date}}
     </p>
 
     {% if review.time_edited %}
-    <p>
-      Modifié {{review.time_edited|date}} à
-      {{review.time_edited|date:"H\hi"}}.
-    </p>
+      <p>
+        Modifié à
+        {{review.time_edited|date:"H\hi"}},
+        le {{review.time_edited|date}}
+      </p>
     {% endif %}
 
     <p>{{review.headline|capfirst}} - {{review.star}}</p>
