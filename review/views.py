@@ -4,11 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from django.db.models import F, Case, When, Q
 from django.db import models
-import flake8_html
+from django.forms import formset_factory
 
-
-from review.models import Ticket, Review
-from review.forms import TicketForm, ReviewForm
+from authentication.models import User
+from review.models import Ticket, Review, Follower
+from review.forms import TicketForm, ReviewForm, FollowerForm
+from review.validators import validate_followed_user
 
 
 # en cours...(ajouter filtre abonnement)
@@ -16,14 +17,18 @@ from review.forms import TicketForm, ReviewForm
 def home(request):
     """homepage view"""
 
-    # ajouter les review des abonnements une fois réalisé.
-    """     reviews = Review.objects.filter(
-            Q(user=request.user) | Q(ticket__user=request.user)
-        ).order_by("-time_last_entry") """
-
-    reviews = Review.objects.filter(self_review_instance=False).order_by(
-        "-time_last_entry"
+    followed_users = Follower.objects.filter(user=request.user).values_list(
+        "followed_user", flat=True
     )
+    reviews = Review.objects.filter(
+        (Q(self_review_instance=False))
+        & (
+            Q(user=request.user)
+            | Q(ticket__user=request.user)
+            | Q(user__in=followed_users)
+            | Q(ticket__user__in=followed_users)
+        )
+    ).order_by("-time_last_entry")
 
     return render(request, "review/home.html", {"reviews": reviews})
 
@@ -47,7 +52,7 @@ def posts(request):
     return render(request, "review/posts.html", {"reviews": reviews})
 
 
-# OK, inutile ? 
+# OK, inutile ?
 @login_required
 def ticket_list(request):
     """tickets list of the current user"""
@@ -152,8 +157,6 @@ def ticket_self_review_create(request):
         self_review_form = ReviewForm(request.POST)
 
         if all([ticket_form.is_valid(), self_review_form.is_valid()]):
-            """Review() contains Ticket() and SelfReview() fields"""
-
             review = Review()
 
             ticket = ticket_form.save(commit=False)
@@ -236,6 +239,7 @@ def self_review_delete(request, review_id):
 
     return redirect("forbidden_permission")
 
+
 # OK
 @login_required
 def self_review_update(request, review_id):
@@ -259,6 +263,7 @@ def self_review_update(request, review_id):
 
     return redirect("forbidden_permission")
 
+
 # OK
 @login_required
 def review_create(request, review_id):
@@ -271,8 +276,6 @@ def review_create(request, review_id):
             form = ReviewForm(request.POST)
 
             if form.is_valid():
-                # tierce_review = review_form.save(commit=False)
-
                 review.user = request.user
                 review.rating = form.cleaned_data["rating"]
                 review.headline = form.cleaned_data["headline"]
@@ -293,6 +296,7 @@ def review_create(request, review_id):
 
     return redirect("forbidden_permission")
 
+
 # OK
 @login_required
 def review_delete(request, review_id):
@@ -302,7 +306,6 @@ def review_delete(request, review_id):
 
     if review.user == request.user:
         if request.method == "POST":
-
             review.set_null()
 
             if review.self_review:
@@ -313,6 +316,7 @@ def review_delete(request, review_id):
         return render(request, "review/review_delete.html", {"review": review})
 
     return redirect("forbidden_permission")
+
 
 # OK
 @login_required
@@ -336,5 +340,41 @@ def review_update(request, review_id):
 
     return redirect("forbidden_permission")
 
-def following(request):
-    pass
+
+# OK
+@login_required
+def follower(request):
+    follow = Follower()
+    form = FollowerForm()
+    followed_users = Follower.objects.filter(user=request.user)
+    followers = Follower.objects.filter(followed_user=request.user)
+
+    if request.method == "POST":
+        form = FollowerForm(request.POST)
+        if form.is_valid():
+            if request.user.username != form.cleaned_data["followed_user"]:
+                follow.user = request.user
+                follow.followed_user = User.objects.get(
+                    username=form.cleaned_data["followed_user"]
+                )
+                follow.save()
+
+                return redirect("follower")
+
+    return render(
+        request,
+        "review/follower.html",
+        {
+            "form": form,
+            "followed_users": followed_users,
+            "followers": followers,
+        },
+    )
+
+
+# OK
+def follower_delete(request, follower_id):
+    follower = Follower.objects.get(id=follower_id)
+    follower.delete()
+
+    return redirect("follower")

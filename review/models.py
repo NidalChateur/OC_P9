@@ -68,9 +68,11 @@ class Review(models.Model):
     self_review = models.ForeignKey(to="self", on_delete=models.SET_NULL, null=True)
 
     def set_null(self, *args, **kwargs):
+        """erase the tierce review"""
+
         self.user = None
         self.rating = None
-        self.star= None
+        self.star = None
         self.headline = None
         self.body = None
         self.time_created = None
@@ -96,7 +98,17 @@ class Review(models.Model):
     """Book/article review model"""
 
 
-""" class UserFollows(models.Model):
+class Follower(models.Model):
+    user = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="follower"
+    )
+    followed_user = models.ForeignKey(
+        verbose_name="Nom d'utilisateur",
+        to=settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="followed",
+    )
+    description = models.CharField(max_length=255, null=True)
     # Your UserFollows model definition goes here
 
     class Meta:
@@ -105,4 +117,10 @@ class Review(models.Model):
         unique_together = (
             "user",
             "followed_user",
-        ) """
+        )
+
+    def save(self, *args, **kwargs):
+        self.description = (
+            f"{str(self.user).capitalize()} follows {str(self.followed_user).capitalize()}"
+        )
+        super().save(*args, **kwargs)
