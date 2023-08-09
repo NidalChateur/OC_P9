@@ -373,8 +373,12 @@ def follower(request):
 
 
 # OK
+@login_required
 def follower_delete(request, follower_id):
     follower = Follower.objects.get(id=follower_id)
-    follower.delete()
+    if request.user == follower.user:
+        follower.delete()
 
-    return redirect("follower")
+        return redirect("follower")
+
+    return redirect("forbidden_permission")

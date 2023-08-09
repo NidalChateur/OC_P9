@@ -31,10 +31,6 @@ class ReviewForm(forms.ModelForm):
 
 
 class FollowerForm(forms.Form):
-    create = forms.BooleanField(widget=forms.HiddenInput, initial=True)
     followed_user = forms.CharField(
         max_length=128, label="Nom d'utilisateur", validators=[validate_followed_user]
     )
-
-class DeleteFollowerForm(forms.Form):
-    delete_blog = forms.BooleanField(widget=forms.HiddenInput, initial=True)
