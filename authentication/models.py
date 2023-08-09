@@ -8,3 +8,6 @@ class User(AbstractUser):
     photo = models.ImageField(
         verbose_name="Photo de profil", blank=True, null=True, default=None
     )
+
+    def __str__(self):
+        return f"{str(self.username).capitalize()}"

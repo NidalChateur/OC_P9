@@ -14,7 +14,7 @@
           <span>Vous êtes connecté en tant que {{ user|capfirst }}. </span>
           <a href="{% url 'home' %}">Flux</a>
           <a href="{% url 'posts' %}">Posts</a>
-          <a href="">Abonnements</a>
+          <a href="{% url 'follower' %}">Abonnements</a>
           <a href="{% url 'profile' %}">Mon profil</a>
           <a href="{% url 'logout' %}">Se déconnecter</a>
         {% endif %}

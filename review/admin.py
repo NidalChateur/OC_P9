@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from review.models import Ticket, Review
+from review.models import Ticket, Review, Follower
 
 
 class TicketAdmin(admin.ModelAdmin):
@@ -29,3 +29,14 @@ class ReviewAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Review, ReviewAdmin)
+
+
+class FollowerAdmin(admin.ModelAdmin):
+    list_display = (
+        "user",
+        "followed_user",
+        "description",
+    )
+
+
+admin.site.register(Follower, FollowerAdmin)
