@@ -1,3 +1,4 @@
+from imp import get_frozen_object
 from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils import timezone
@@ -10,7 +11,7 @@ from review.models import Ticket, Review
 from review.forms import TicketForm, ReviewForm
 
 
-# en cours...(ajouter filtre post abonnement et self post)
+# en cours...(ajouter filtre abonnement)
 @login_required
 def home(request):
     """homepage view"""
@@ -46,8 +47,7 @@ def posts(request):
     return render(request, "review/posts.html", {"reviews": reviews})
 
 
-# inutile ? car il y a des reviews ! > faire apparaître uniquement les tickets
-# et faire apparaître tous les tickets...
+# OK, inutile ? 
 @login_required
 def ticket_list(request):
     """tickets list of the current user"""
@@ -125,6 +125,7 @@ def ticket_update(request, ticket_id):
     """ticket update view"""
 
     ticket = get_object_or_404(Ticket, id=ticket_id)
+    review = get_object_or_404(Review, ticket__id=ticket_id, self_review_instance=False)
     if ticket.user == request.user:
         form = TicketForm(instance=ticket)
         if request.method == "POST":
@@ -132,6 +133,7 @@ def ticket_update(request, ticket_id):
             if form.is_valid():
                 ticket = form.save(commit=False)
                 ticket.save()
+                review.save()
 
                 return redirect("ticket_detail", ticket.id)
 
@@ -234,7 +236,7 @@ def self_review_delete(request, review_id):
 
     return redirect("forbidden_permission")
 
-
+# OK
 @login_required
 def self_review_update(request, review_id):
     """self review update"""
@@ -247,6 +249,7 @@ def self_review_update(request, review_id):
             form = ReviewForm(request.POST, instance=review.self_review)
             if form.is_valid():
                 form.save()
+                review.save()
 
                 return redirect("review_detail", review.id)
 
@@ -256,7 +259,7 @@ def self_review_update(request, review_id):
 
     return redirect("forbidden_permission")
 
-
+# OK
 @login_required
 def review_create(request, review_id):
     """tierce review creation"""
@@ -290,7 +293,7 @@ def review_create(request, review_id):
 
     return redirect("forbidden_permission")
 
-
+# OK
 @login_required
 def review_delete(request, review_id):
     """delete tierce review"""
@@ -299,14 +302,8 @@ def review_delete(request, review_id):
 
     if review.user == request.user:
         if request.method == "POST":
-            review.user = None
-            review.rating = None
-            review.headline = None
-            review.body = None
-            review.time_created = None
-            review.time_edited = None
 
-            review.save()
+            review.set_null()
 
             if review.self_review:
                 return redirect("review_detail", review.id)
@@ -317,7 +314,7 @@ def review_delete(request, review_id):
 
     return redirect("forbidden_permission")
 
-
+# OK
 @login_required
 def review_update(request, review_id):
     """review update"""
@@ -338,3 +335,6 @@ def review_update(request, review_id):
         )
 
     return redirect("forbidden_permission")
+
+def following(request):
+    pass

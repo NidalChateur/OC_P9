@@ -18,12 +18,6 @@ class Ticket(models.Model):
     title = models.CharField(
         max_length=128,
         verbose_name="Titre",
-        # validators=[
-        #     models.UniqueValidator(
-        #         queryset=Ticket.objects.all(),
-        #         message =_("Un livre avec ce titre existe déjà."),
-        #     ),
-        # ],
     )
     description = models.TextField(max_length=2048, blank=True, null=True)
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -56,7 +50,6 @@ class Review(models.Model):
     rating = models.IntegerField(
         verbose_name="Note",
         validators=[MinValueValidator(0), MaxValueValidator(5)],
-        # choices=[(1, "1"), (2, "2"), (3, "3"), (4, "4"), (5, "5")],
         null=True,
     )
     star = models.CharField(null=True, max_length=5)
@@ -69,25 +62,30 @@ class Review(models.Model):
     )
     time_created = models.DateTimeField(null=True)
     time_edited = models.DateTimeField(null=True)
-    time_last_entry = models.DateTimeField(null=True)
+    time_last_entry = models.DateTimeField(auto_now_add=True, null=True)
     ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE, null=True)
     self_review_instance = models.BooleanField(default=False)
     self_review = models.ForeignKey(to="self", on_delete=models.SET_NULL, null=True)
 
+    def set_null(self, *args, **kwargs):
+        self.user = None
+        self.rating = None
+        self.star= None
+        self.headline = None
+        self.body = None
+        self.time_created = None
+        self.time_edited = None
+        super().save(*args, **kwargs)
+
     def save(self, *args, **kwargs):
+        self.time_last_entry = timezone.now()
         # modification time
         if self.user and self.time_created:
-            self.time_edited = self.time_last_entry = timezone.now()
+            self.time_edited = timezone.now()
 
         # creation time
         if self.user and not self.time_created:
-            self.time_created = self.time_last_entry = timezone.now()
-
-        # last entry time
-        if not self.self_review_instance:
-            self.time_last_entry = max(
-                self.time_last_entry, self.ticket.time_last_entry
-            )
+            self.time_created = timezone.now()
 
         # star field
         if self.user:
