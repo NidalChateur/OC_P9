@@ -7,7 +7,6 @@ class TicketAdmin(admin.ModelAdmin):
     list_display = (
         "title",
         "user",
-        "time_last_entry",
         "time_created",
         "time_edited",
         "id",
