@@ -1,3 +1,5 @@
+{% load custom_filters %}
+
 {% if review.user %}
   <div class="comment">
     <p>
@@ -6,17 +8,26 @@
       {% else %}
         {{review.user|capfirst}} a
       {% endif %} 
-      publié une critique à {{review.time_created|date:"H\hi"}},
-      le {{review.time_created|date}}
-    </p>
+      publié une critique     
+      {% if review.time_created|is_recent %}
+        {{review.time_created|get_posted_at_display}}
+      {% else %}
+        à {{review.time_created|date:"H\hi"}},
+        le {{review.time_created|date}}
+      {% endif %}    
+  </p>
 
-    {% if review.time_edited %}
-      <p>
-        Modifié à
-        {{review.time_edited|date:"H\hi"}},
+  {% if review.time_edited %}
+    <p>
+      Modifié 
+      {% if review.time_edited|is_recent %}
+        {{review.time_edited|get_posted_at_display}}
+      {% else %}
+        à {{review.time_edited|date:"H\hi"}},
         le {{review.time_edited|date}}
-      </p>
-    {% endif %}
+      {% endif %}  
+    </p>
+  {% endif %}
 
     <p>{{review.headline|capfirst}} - {{review.star}}</p>
 

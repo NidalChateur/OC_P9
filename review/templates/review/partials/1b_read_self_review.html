@@ -1,21 +1,33 @@
+{% load custom_filters %}
+
 {% if review.self_review %}
   <div class="comment">
     <p>
-        {% if review.self_review.user == user %}
-          Vous avez
-        {% else %}
-          {{review.self_review.user|capfirst}} a
-        {% endif %} 
-        publié une critique à {{review.self_review.time_created|date:"H\hi"}},
+      {% if review.self_review.user == user %}
+        Vous avez
+      {% else %}
+        {{review.self_review.user|capfirst}} a
+      {% endif %} 
+      publié une critique
+      {% if review.self_review.time_created|is_recent %}
+        {{review.self_review.time_created|get_posted_at_display}}
+      {% else %}
+        à {{review.self_review.time_created|date:"H\hi"}},
         le {{review.self_review.time_created|date}}
-    </p>
+      {% endif %}    
+  </p>
 
-    {% if review.self_review.time_edited %}
-      <p>
-        Modifié à {{review.self_review.time_edited|date}}
-        le {{review.self_review.time_edited|date:"H\hi"}}
-      </p>
-    {% endif %}
+  {% if review.self_review.time_edited %}
+    <p>
+      Modifié 
+      {% if review.self_review.time_edited|is_recent %}
+        {{review.self_review.time_edited|get_posted_at_display}}
+      {% else %}
+        à {{review.self_review.time_edited|date:"H\hi"}},
+        le {{review.self_review.time_edited|date}}
+      {% endif %}  
+    </p>
+  {% endif %}
 
     <p>{{review.self_review.headline|capfirst}} - {{review.self_review.star}}</p>
 

@@ -123,8 +123,9 @@ def ticket_create(request):
             review.ticket = ticket
 
             if Ticket.objects.filter(slug=slugify(ticket.title)):
-                existant_ticket=Ticket.objects.get(slug=slugify(ticket.title))
+                existant_ticket = get_object_or_404(Ticket, slug=slugify(ticket.title))
                 messages.info(request, " ⚠️ Demande de critique déjà existante")
+
                 return redirect("ticket_detail", existant_ticket.id)
 
             ticket.save()
@@ -148,7 +149,7 @@ def ticket_delete(request, ticket_id):
     ticket = get_object_or_404(Ticket, id=ticket_id)
     if ticket.user != request.user:
         return redirect("forbidden_permission")
-    
+
     if request.method == "POST":
         ticket.delete()
         messages.success(request, " ✅ Demande de critique supprimée avec succès !")
@@ -156,7 +157,6 @@ def ticket_delete(request, ticket_id):
         return redirect("home")
 
     return render(request, "review/ticket_delete.html", {"ticket": ticket})
-
 
 
 # OK
@@ -169,7 +169,7 @@ def ticket_update(request, ticket_id):
 
     if ticket.user != request.user:
         return redirect("forbidden_permission")
-    
+
     form = TicketForm(instance=ticket)
     if request.method == "POST":
         form = TicketForm(request.POST, request.FILES, instance=ticket)
@@ -178,15 +178,11 @@ def ticket_update(request, ticket_id):
             ticket.save()
             review.save()
 
-            messages.success(
-                request, " ✅ Demande de critique modifiée avec succès !"
-            )
+            messages.success(request, " ✅ Demande de critique modifiée avec succès !")
 
             return redirect("ticket_detail", ticket.id)
 
     return render(request, "review/ticket_update.html", {"form": form})
-
-    
 
 
 # OK
@@ -209,9 +205,9 @@ def ticket_self_review_create(request):
             review.self_review = selfReview
 
             if Ticket.objects.filter(slug=slugify(ticket.title)):
-                existant_ticket=Ticket.objects.get(slug=slugify(ticket.title))
+                existant_ticket = get_object_or_404(Ticket, slug=slugify(ticket.title))
                 messages.info(request, " ⚠️ Demande de critique déjà existante")
-                
+
                 return redirect("ticket_detail", existant_ticket.id)
 
             ticket.save()
@@ -242,7 +238,7 @@ def self_review_create(request, review_id):
 
     if (review.ticket.user != request.user) or review.self_review:
         return redirect("forbidden_permission")
-    
+
     if request.method == "POST":
         form = ReviewForm(request.POST)
 
@@ -268,8 +264,6 @@ def self_review_create(request, review_id):
         {"form": form, "review": review},
     )
 
-    
-
 
 # OK
 @login_required
@@ -280,7 +274,7 @@ def self_review_delete(request, review_id):
 
     if review.self_review.user != request.user:
         return redirect("forbidden_permission")
-    
+
     if request.method == "POST":
         review.self_review.delete()
 
@@ -288,13 +282,12 @@ def self_review_delete(request, review_id):
             messages.success(request, " ✅ Critique supprimée avec succès !")
 
             return redirect("review_detail", review.id)
-        
+
         messages.success(request, " ✅ Critique supprimée avec succès !")
 
         return redirect("ticket_detail", review.ticket.id)
 
     return render(request, "review/review_delete.html", {"review": review})
-
 
 
 # OK
@@ -306,7 +299,7 @@ def self_review_update(request, review_id):
 
     if review.self_review.user != request.user:
         return redirect("forbidden_permission")
-    
+
     form = ReviewForm(instance=review.self_review)
     if request.method == "POST":
         form = ReviewForm(request.POST, instance=review.self_review)
@@ -321,7 +314,6 @@ def self_review_update(request, review_id):
     return render(
         request, "review/review_update.html", {"review": review, "form": form}
     )
-
 
 
 # OK
@@ -368,7 +360,7 @@ def review_delete(request, review_id):
 
     if review.user != request.user:
         return redirect("forbidden_permission")
-    
+
     if request.method == "POST":
         review.set_null()
 
@@ -376,13 +368,12 @@ def review_delete(request, review_id):
             messages.success(request, " ✅ Critique supprimée avec succès !")
 
             return redirect("review_detail", review.id)
-        
+
         messages.success(request, " ✅ Critique supprimée avec succès !")
 
         return redirect("ticket_detail", review.ticket.id)
 
     return render(request, "review/review_delete.html", {"review": review})
-
 
 
 # OK
@@ -394,7 +385,7 @@ def review_update(request, review_id):
 
     if review.user != request.user:
         return redirect("forbidden_permission")
-    
+
     form = ReviewForm(instance=review)
     if request.method == "POST":
         form = ReviewForm(request.POST, instance=review)
@@ -410,7 +401,6 @@ def review_update(request, review_id):
     )
 
 
-
 # OK (ajouter bloquer un utilisateur ?)
 @login_required
 def follower(request):
@@ -422,15 +412,14 @@ def follower(request):
     if request.method == "POST":
         form = FollowerForm(request.POST)
         if form.is_valid():
-
             if request.user.username == form.cleaned_data["followed_user"]:
                 messages.error(request, " 🚫 Abonnement non autorisé !")
 
                 return redirect("follower")
 
             follow.user = request.user
-            follow.followed_user = User.objects.get(
-                username=form.cleaned_data["followed_user"]
+            follow.followed_user = get_object_or_404(
+                User, username=form.cleaned_data["followed_user"]
             )
 
             if Follower.objects.filter(
@@ -463,7 +452,7 @@ def follower(request):
 # OK
 @login_required
 def follower_delete(request, follower_id):
-    follower = Follower.objects.get(id=follower_id)
+    follower = get_object_or_404(Follower, id=follower_id)
 
     if request.user != follower.user:
         return redirect("forbidden_permission")

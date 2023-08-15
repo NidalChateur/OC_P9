@@ -24,7 +24,7 @@ class Ticket(models.Model):
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
     time_created = models.DateTimeField(null=True)
-    time_edited = models.DateTimeField(null=True)
+    time_edited = models.DateTimeField(null=True, blank=True)
     time_last_entry = models.DateTimeField(null=True)
     slug = models.SlugField(max_length=128, null=True)
 
@@ -65,7 +65,7 @@ class Review(models.Model):
         to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True
     )
     time_created = models.DateTimeField(null=True)
-    time_edited = models.DateTimeField(null=True)
+    time_edited = models.DateTimeField(null=True, blank=True)
     time_last_entry = models.DateTimeField(auto_now_add=True, null=True)
     ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE, null=True)
     is_self_review = models.BooleanField(default=False)

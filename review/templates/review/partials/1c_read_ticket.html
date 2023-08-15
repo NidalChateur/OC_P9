@@ -1,4 +1,5 @@
 {% load custom_filters %}
+
 <div class="ticket">
   <p>
     {% if review.ticket.user == user %}
@@ -6,14 +7,24 @@
     {% else %}
       {{review.ticket.user|capfirst}} a 
     {% endif %}  
-    demandé une critique à {{review.ticket.time_created|date:"H\hi"}}, 
-    le {{review.ticket.time_created|date}}
+    demandé une critique
+    {% if review.ticket.time_created|is_recent %}
+      {{review.ticket.time_created|get_posted_at_display}}
+    {% else %}
+      à {{review.ticket.time_created|date:"H\hi"}},
+      le {{review.ticket.time_created|date}}
+    {% endif %}    
   </p>
 
   {% if review.ticket.time_edited %}
     <p>
-      Modifié à {{review.ticket.time_edited|date:"H\hi"}},
-      le {{review.ticket.time_edited|date}}
+      Modifié 
+      {% if review.ticket.time_edited|is_recent %}
+        {{review.ticket.time_edited|get_posted_at_display}}
+      {% else %}
+        à {{review.ticket.time_edited|date:"H\hi"}},
+        le {{review.ticket.time_edited|date}}
+      {% endif %}  
     </p>
   {% endif %}
 
