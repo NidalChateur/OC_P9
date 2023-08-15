@@ -2,6 +2,8 @@
 
 {% block content %}
 
+  {% include 'review/partials/flash_message.html' %}
+
   {% if review.ticket.user == user %}
     <h1>Votre demande de critique</h1>
   {% else %}

@@ -7,6 +7,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
+from django.utils.text import slugify
 
 FULL_STAR = "★"
 EMPTY_STAR = "☆"
@@ -25,6 +26,7 @@ class Ticket(models.Model):
     time_created = models.DateTimeField(null=True)
     time_edited = models.DateTimeField(null=True)
     time_last_entry = models.DateTimeField(null=True)
+    slug = models.SlugField(max_length=128, null=True)
 
     def __str__(self):
         return f"{self.title}"
@@ -40,6 +42,8 @@ class Ticket(models.Model):
         # creation time
         if not self.time_created:
             self.time_created = self.time_last_entry = timezone.now()
+
+        self.slug=slugify(self.title)
 
         super().save(*args, **kwargs)
 
@@ -64,7 +68,7 @@ class Review(models.Model):
     time_edited = models.DateTimeField(null=True)
     time_last_entry = models.DateTimeField(auto_now_add=True, null=True)
     ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE, null=True)
-    self_review_instance = models.BooleanField(default=False)
+    is_self_review = models.BooleanField(default=False)
     self_review = models.ForeignKey(to="self", on_delete=models.SET_NULL, null=True)
 
     def set_null(self, *args, **kwargs):
@@ -93,6 +97,9 @@ class Review(models.Model):
         if self.user:
             self.star = self.rating * FULL_STAR + (5 - self.rating) * EMPTY_STAR
 
+        if self.user == self.ticket.user:
+            self.is_self_review = True
+
         super().save(*args, **kwargs)
 
     """Book/article review model"""
@@ -120,7 +127,5 @@ class Follower(models.Model):
         )
 
     def save(self, *args, **kwargs):
-        self.description = (
-            f"{str(self.user).capitalize()} follows {str(self.followed_user).capitalize()}"
-        )
+        self.description = f"{str(self.user).capitalize()} follows {str(self.followed_user).capitalize()}"
         super().save(*args, **kwargs)

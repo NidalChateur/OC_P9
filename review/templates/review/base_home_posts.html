@@ -4,11 +4,14 @@
 
 {% block content %}
 
+	{% include 'review/partials/flash_message.html' %}
+
 	{% block title %}
 		<!-- <h1>Vos posts</h1> -->
 	{% endblock title %}
 
 	{% include "create_menu.html" %}
+
 
 	{% for review in reviews %}
 

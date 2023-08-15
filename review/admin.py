@@ -10,6 +10,7 @@ class TicketAdmin(admin.ModelAdmin):
         "time_created",
         "time_edited",
         "id",
+        "slug"
     )
 
 
@@ -24,7 +25,7 @@ class ReviewAdmin(admin.ModelAdmin):
         "time_created",
         "time_edited",
         "id",
-        "self_review_instance",
+        "is_self_review"
     )
 
 
@@ -36,6 +37,7 @@ class FollowerAdmin(admin.ModelAdmin):
         "user",
         "followed_user",
         "description",
+        "id"
     )
 
 

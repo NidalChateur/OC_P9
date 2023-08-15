@@ -2,6 +2,8 @@
 
 {% block content %}
 
+  {% include 'review/partials/flash_message.html' %}
+
   {% if review.user == user or review.self_review.user == user %}
     <h1>Votre critique</h1>
   {% else %}

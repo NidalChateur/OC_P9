@@ -50,3 +50,17 @@
 button a {
   text-decoration: none;
 }
+.success {
+  padding: 0.5%;
+  background-color: #dfd;
+}
+.error{
+  padding: 0.5%;
+  background-color: rgb(255, 229, 169);
+
+} 
+.info{
+  padding: 0.5%;
+  background-color: rgb(255, 229, 169);
+
+} 

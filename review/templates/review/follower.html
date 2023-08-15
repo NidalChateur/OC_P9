@@ -1,6 +1,9 @@
 {% extends 'base.html' %} 
 
 {% block content %}
+
+    {% include 'review/partials/flash_message.html' %}
+
     <div>
         <h1>Suivre des utilisateurs</h1>
         <form method="post">
@@ -33,8 +36,5 @@
         
         {% endfor %}
     </div>
-
-
-
 
 {% endblock content %}
