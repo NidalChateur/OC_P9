@@ -10,11 +10,11 @@
     <h1>Demande de critique</h1>
   {% endif %}
 
-  {% include "create_menu.html" %}
+  {% include "review/partials/create_menu.html" %}
 
 
   {% if review %}
-    {% include "1_read.html" %}
+    {% include "review/partials/1_read.html" %}
   {% else %}
     <p>Aucune demande de critique trouvée.</p>
   {% endif %}

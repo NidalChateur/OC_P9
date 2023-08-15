@@ -10,10 +10,10 @@
     <h1>Critique</h1>
   {% endif %}
 
-  {% include "create_menu.html" %}
+  {% include "review/partials/create_menu.html" %}
 
   {% if review %}
-    {% include "1_read.html" %}
+    {% include "review/partials/1_read.html" %}
   {% else %}
     <p>Aucune critique trouvée.</p>
   {% endif %}
