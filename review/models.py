@@ -1,12 +1,7 @@
-from typing import Collection, Iterable, Optional
-from unittest import TextTestRunner
 from django.core.validators import MinValueValidator, MaxValueValidator
 from django.conf import settings
 from django.db import models
-from django import forms
-from django.core.exceptions import ValidationError
 from django.utils import timezone
-from django.utils.translation import gettext_lazy as _
 from django.utils.text import slugify
 
 FULL_STAR = "★"
@@ -14,8 +9,6 @@ EMPTY_STAR = "☆"
 
 
 class Ticket(models.Model):
-    """ticket model waiting for an user review"""
-
     title = models.CharField(
         max_length=128,
         verbose_name="Titre",
@@ -43,14 +36,12 @@ class Ticket(models.Model):
         if not self.time_created:
             self.time_created = self.time_last_entry = timezone.now()
 
-        self.slug=slugify(self.title)
+        self.slug = slugify(self.title)
 
         super().save(*args, **kwargs)
 
 
 class Review(models.Model):
-    """main review model"""
-
     rating = models.IntegerField(
         verbose_name="Note",
         validators=[MinValueValidator(0), MaxValueValidator(5)],
@@ -102,8 +93,6 @@ class Review(models.Model):
 
         super().save(*args, **kwargs)
 
-    """Book/article review model"""
-
 
 class Follower(models.Model):
     user = models.ForeignKey(
@@ -116,11 +105,8 @@ class Follower(models.Model):
         related_name="followed",
     )
     description = models.CharField(max_length=255, null=True)
-    # Your UserFollows model definition goes here
 
     class Meta:
-        # ensures we don't get multiple UserFollows instances
-        # for unique user-user_followed pairs
         unique_together = (
             "user",
             "followed_user",

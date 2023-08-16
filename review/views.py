@@ -1,45 +1,23 @@
-from django.shortcuts import render, redirect, get_object_or_404, get_list_or_404
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from django.utils import timezone
-from django.db.models import F, Case, When, Q
-from django.db import models
-from django.forms import formset_factory
+from django.db.models import Q
 from django.core.paginator import Paginator
 from django.contrib import messages
 from django.utils.text import slugify
 
-from imp import get_frozen_object
 
 from authentication.models import User
 from review.models import Ticket, Review, Follower
 from review.forms import TicketForm, ReviewForm, FollowerForm
-from review.validators import validate_followed_user
 
-""" # exemple pagination
+
+# OK
 @login_required
-def home(request):
-    blogs = models.Blog.objects.filter(
-        Q(contributors__in=request.user.follows.all()) | Q(starred=True)
-    )
-    photos = models.Photo.objects.filter(
-        uploader__in=request.user.follows.all()
-    ).exclude(blog__in=blogs)
-
-    blogs_and_photos = sorted(
-        chain(blogs, photos), key=lambda instance: instance.date_created, reverse=True
-    )
-    # 1. on instancie paginator
-    paginator = Paginator(blogs_and_photos, 6)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
-    # 2. on passe page_obj au contexte
-    context = {"page_obj": page_obj}
-
-    return render(request, "blog/home.html", context=context)
- """
+def forbidden_permission(request):
+    return render(request, "forbidden_permission.html")
 
 
-# en cours...(ajouter la pagination)
+# OK
 @login_required
 def home(request):
     """homepage view"""
@@ -58,16 +36,14 @@ def home(request):
         )
     ).order_by("-time_last_entry")
 
-    return render(request, "review/home.html", {"reviews": reviews})
+    paginator = Paginator(reviews, 6)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "review/home.html", {"page_obj": page_obj})
 
 
 # OK
-@login_required
-def forbidden_permission(request):
-    return render(request, "forbidden_permission.html")
-
-
-# en cours...(ajouter la pagination)
 @login_required
 def posts(request):
     """posts view"""
@@ -76,17 +52,11 @@ def posts(request):
         Q(is_self_review=False) & (Q(user=request.user) | Q(ticket__user=request.user))
     ).order_by("-time_last_entry")
 
-    return render(request, "review/posts.html", {"reviews": reviews})
+    paginator = Paginator(reviews, 6)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
 
-
-# en cours...(ajouter la pagination)
-@login_required
-def ticket_list(request):
-    """tickets list of the current user"""
-
-    reviews = Review.objects.filter(is_self_review=False).order_by("-time_last_entry")
-
-    return render(request, "review/ticket_list.html", {"reviews": reviews})
+    return render(request, "review/posts.html", {"page_obj": page_obj})
 
 
 # OK

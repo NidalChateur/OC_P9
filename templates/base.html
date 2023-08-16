@@ -22,7 +22,13 @@
         <p><img src="{% static 'img/icon.png' %}" alt="LITRewiew icon" /></p>
       </nav>
     </header>
-    {% block content %}
-    {% endblock content %}
+    <main>
+      {% block content %}
+      {% endblock content %}
+  </main>
+  <footer>
+    {% block footer %}
+    {% endblock footer %}
+  </footer>
   </body>
 </html>

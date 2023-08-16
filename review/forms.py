@@ -1,10 +1,7 @@
 from django import forms
-from django.contrib.auth import get_user_model
 
-from review.models import Ticket, Review, Follower
+from review.models import Ticket, Review
 from review.validators import validate_followed_user
-from authentication.models import User
-from django.core.exceptions import ValidationError
 
 
 class TicketForm(forms.ModelForm):

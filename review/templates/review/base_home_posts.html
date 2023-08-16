@@ -11,7 +11,7 @@
 	{% include "review/partials/create_menu.html" %}
 
 
-	{% for review in reviews %}
+	{% for instance in page_obj %}
 
 		{% block read %}
 			<!-- {% include "1_read.html" with posts="True" %} -->
@@ -23,5 +23,11 @@
 		<p>Aucun post publié.</p>
 		
 	{% endfor %}
-
+	
 {% endblock content %}
+
+{% block footer %}
+
+	{% include 'review/partials/page_navigator.html' %}
+
+{% endblock footer %}

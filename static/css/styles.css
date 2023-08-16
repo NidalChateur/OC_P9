@@ -54,13 +54,18 @@ button a {
   padding: 0.5%;
   background-color: #dfd;
 }
+/* message flash type error */
 .error{
   padding: 0.5%;
   background-color: rgb(255, 229, 169);
 
 } 
+/* message flash type succès */
 .info{
   padding: 0.5%;
   background-color: rgb(255, 229, 169);
 
 } 
+.navigator{
+  margin: 1%;
+}
