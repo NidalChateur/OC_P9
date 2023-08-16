@@ -1,11 +1,6 @@
 from django.urls import path
 
-# generic view :
-# - LoginView
-# - LogoutView
-# - PasswordChangeView
-# - PasswordChangeDoneView
-# - PasswordResetView
+# generics views provided by Django 
 from django.contrib.auth.views import (
     LoginView,
     LogoutView,

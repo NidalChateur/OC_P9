@@ -28,7 +28,19 @@
     </p>
   {% endif %}
 
-  <p>{{review.ticket.title|capfirst}}</p>
+  <p>
+    {% if review.ticket.product_type %}
+      {{review.ticket.product_type|capfirst}} : 
+    {% endif %}
+
+    {{review.ticket.title|capfirst}}{% if review.ticket.author %}, 
+      écrit par {{review.ticket.author|capfirst}}
+    {% endif %}
+
+    {% if review.ticket.release_date %}
+       [{{review.ticket.release_date}}]
+    {% endif %}
+  </p>
 
   {% if review.ticket.description %}
     <p>{{review.ticket.description|capfirst}}</p>

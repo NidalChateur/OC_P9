@@ -14,7 +14,9 @@
         {% if user.is_authenticated %}
           <span>Vous êtes connecté en tant que {{ user|capfirst }}. </span>
           <a href="{% url 'home' %}">Flux</a>
+          <a href="{% url 'ranking' %}">Classement</a>
           <a href="{% url 'posts' %}">Posts</a>
+          <a href="{% url 'search' %}">Rechercher</a>
           <a href="{% url 'relation' %}">Abonnements</a>
           <a href="{% url 'profile' %}">Mon profil</a>
           <a href="{% url 'logout' %}">Se déconnecter</a>

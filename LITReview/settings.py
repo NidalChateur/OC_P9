@@ -111,7 +111,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "fr-fr"
 
-TIME_ZONE = 'Europe/Paris'
+TIME_ZONE = "Europe/Paris"
 # TIME_ZONE = 'UTC'
 
 USE_I18N = True
@@ -147,9 +147,7 @@ LOGOUT_REDIRECT_URL = LOGIN_URL
 
 # Configuration pour l'envoi d'e-mails dans la console (pour le développement et le test)
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-# litreview.django@gmail.com
-# Django*****
-# litreview@litreview-394100.iam.gserviceaccount.com
+
 
 # uploaded images url
 MEDIA_URL = "/media/"

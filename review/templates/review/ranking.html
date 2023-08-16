@@ -1,0 +1,13 @@
+{% extends 'review/base_home_posts.html' %} 
+
+{% block title %}
+
+	<h1>Classement</h1>
+	
+{% endblock title %}
+
+{% block read %}
+
+	{% include "review/partials/1_read.html" with review=instance %}
+
+{% endblock read %}

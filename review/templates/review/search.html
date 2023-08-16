@@ -1,0 +1,31 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+    {% include 'review/partials/flash_message.html' %}
+
+
+    <h1>Chercher un livre ou un article par son titre</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ search_by_title_form.as_p }} 
+        <button type="submit">Chercher</button>
+    </form>
+
+    <h1>Chercher un livre ou un article par son auteur</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ search_by_author_form.as_p }} 
+        <button type="submit">Chercher</button>
+    </form>
+
+    <h1>Chercher un livre ou un article par son année</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ search_by_year_form.as_p }} 
+        <button type="submit">Chercher</button>
+    </form>
+
+
+
+{% endblock content %}

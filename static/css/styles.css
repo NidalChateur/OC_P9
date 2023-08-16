@@ -47,7 +47,7 @@
   color: purple;
 }
 
-button a {
+p a {
   text-decoration: none;
 }
 .success {
@@ -68,4 +68,7 @@ button a {
 } 
 .navigator{
   margin: 1%;
+}
+button{
+  cursor: pointer;
 }

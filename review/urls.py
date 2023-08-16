@@ -3,6 +3,8 @@ from django.urls import path
 from review.views import (
     home,
     posts,
+    ranking,
+    search,
     forbidden_permission,
     ticket_detail,
     ticket_create,
@@ -26,6 +28,8 @@ urlpatterns = [
     # ticket & review
     path("home/", home, name="home"),
     path("posts/", posts, name="posts"),
+    path("ranking/", ranking, name="ranking"),
+    path("search/", search, name="search"),
     path("forbidden_permission/", forbidden_permission, name="forbidden_permission"),
     path(
         "reviews/ticket_self_review_create/",

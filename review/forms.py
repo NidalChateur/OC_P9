@@ -8,7 +8,14 @@ class TicketForm(forms.ModelForm):
 
     class Meta:
         model = Ticket
-        fields = ["title", "description", "image"]
+        fields = [
+            "title",
+            "author",
+            "release_date",
+            "product_type",
+            "description",
+            "image",
+        ]
 
 
 class ReviewForm(forms.ModelForm):
@@ -30,4 +37,25 @@ class RelationForm(forms.Form):
     followed_user = forms.CharField(
         max_length=128,
         label="Nom d'utilisateur",
+    )
+
+
+class TicketSearchByTitleForm(forms.Form):
+    title = forms.CharField(
+        max_length=128,
+        label="Titre",
+    )
+
+
+class TicketSearchByAuthorForm(forms.Form):
+    author = forms.CharField(
+        max_length=128,
+        label="Auteur",
+    )
+
+
+class TicketSearchByYear(forms.Form):
+    year = forms.CharField(
+        max_length=128,
+        label="Année",
     )

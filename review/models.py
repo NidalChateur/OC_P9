@@ -15,13 +15,28 @@ class Ticket(models.Model):
         max_length=128,
         verbose_name="Titre",
     )
+    author = models.CharField(
+        max_length=128, verbose_name="Auteur", null=True, blank=True
+    )
+    product_type = models.CharField(
+        max_length=128,
+        choices=(
+            ("Livre", "Livre"),
+            ("Article", "Article"),
+        ),
+        verbose_name="Type",
+        null=True,
+        blank=True,
+    )
+    release_date = models.IntegerField(null=True, blank=True, verbose_name="Année")
     description = models.TextField(max_length=2048, blank=True, null=True)
     user = models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
     time_created = models.DateTimeField(null=True)
     time_edited = models.DateTimeField(null=True, blank=True)
     time_last_entry = models.DateTimeField(null=True)
-    slug = models.SlugField(max_length=128, null=True)
+    slug_title = models.SlugField(max_length=128, null=True)
+    slug_author = models.SlugField(max_length=128, null=True)
 
     def __str__(self):
         return f"{self.title}"
@@ -38,14 +53,17 @@ class Ticket(models.Model):
         if not self.time_created:
             self.time_created = self.time_last_entry = timezone.now()
 
-        self.slug = slugify(self.title)
+        self.slug_title = slugify(self.title)
+
+        if self.author:
+            self.slug_author = slugify(self.author)
 
         super().save(*args, **kwargs)
 
 
 class Review(models.Model):
     """fields of the review.
-    If the author of the ticket and the review are the same : it is a self_review ! """
+    If the author of the ticket and the review are the same : it is a self_review !"""
 
     rating = models.IntegerField(
         verbose_name="Note",
@@ -66,6 +84,11 @@ class Review(models.Model):
     ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE, null=True)
     is_self_review = models.BooleanField(default=False)
     self_review = models.ForeignKey(to="self", on_delete=models.SET_NULL, null=True)
+    overall_rating = models.IntegerField(
+        verbose_name="Note Total",
+        validators=[MinValueValidator(0), MaxValueValidator(10)],
+        null=True,
+    )
 
     def set_null(self, *args, **kwargs):
         """erase the tierce review"""
@@ -93,8 +116,17 @@ class Review(models.Model):
         if self.user:
             self.star = self.rating * FULL_STAR + (5 - self.rating) * EMPTY_STAR
 
+        # is_self_review
         if self.user == self.ticket.user:
             self.is_self_review = True
+
+        # overall_rating
+        if self.rating and self.self_review:
+            self.overall_rating = self.rating + self.self_review.rating
+        elif self.rating :
+            self.overall_rating = self.rating
+        elif self.self_review:
+            self.overall_rating = self.self_review.rating
 
         super().save(*args, **kwargs)
 

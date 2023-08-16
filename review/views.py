@@ -8,7 +8,21 @@ from django.utils.text import slugify
 
 from authentication.models import User
 from review.models import Ticket, Review, Relation
-from review.forms import TicketForm, ReviewForm, RelationForm
+from review.forms import (
+    TicketForm,
+    ReviewForm,
+    RelationForm,
+    TicketSearchByTitleForm,
+    TicketSearchByAuthorForm,
+    TicketSearchByYear,
+)
+
+
+def paginator(request, qs) -> Paginator:
+    paginator = Paginator(qs, 6)
+    page_number = request.GET.get("page")
+
+    return paginator.get_page(page_number)
 
 
 @login_required
@@ -21,7 +35,6 @@ def home(request):
     """homepage view.
     read tickets and reviews posted by the connected user and the users he follows"""
 
-    # requête inversée ? ici
     followed_users = Relation.objects.filter(
         user_1=request.user, type="follows"
     ).values_list("user_2", flat=True)
@@ -36,9 +49,7 @@ def home(request):
         )
     ).order_by("-time_last_entry")
 
-    paginator = Paginator(reviews, 6)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    page_obj = paginator(request, reviews)
 
     return render(request, "review/home.html", {"page_obj": page_obj})
 
@@ -52,11 +63,21 @@ def posts(request):
         Q(is_self_review=False) & (Q(user=request.user) | Q(ticket__user=request.user))
     ).order_by("-time_last_entry")
 
-    paginator = Paginator(reviews, 6)
-    page_number = request.GET.get("page")
-    page_obj = paginator.get_page(page_number)
+    page_obj = paginator(request, reviews)
 
     return render(request, "review/posts.html", {"page_obj": page_obj})
+
+
+@login_required
+def ranking(request):
+    """ranking view.
+    read all tickets ordered by rating"""
+
+    reviews = Review.objects.filter(is_self_review=False).order_by("-overall_rating")
+
+    page_obj = paginator(request, reviews)
+
+    return render(request, "review/ranking.html", {"page_obj": page_obj})
 
 
 @login_required
@@ -66,6 +87,7 @@ def ticket_detail(request, ticket_id):
 
     review = get_object_or_404(Review, ticket__id=ticket_id, is_self_review=False)
 
+    # Test if the connected user is blocked by the user who created the ticket
     if Relation.objects.filter(
         user_1=review.ticket.user, type="blocks", user_2=request.user
     ):
@@ -81,6 +103,7 @@ def review_detail(request, review_id):
 
     review = get_object_or_404(Review, id=review_id)
 
+    # Test if the connected user is blocked by the user who created the ticket
     if Relation.objects.filter(
         user_1=review.ticket.user, type="blocks", user_2=request.user
     ):
@@ -101,8 +124,10 @@ def ticket_create(request):
             ticket.user = request.user
             review.ticket = ticket
 
-            if Ticket.objects.filter(slug=slugify(ticket.title)):
-                existant_ticket = get_object_or_404(Ticket, slug=slugify(ticket.title))
+            if Ticket.objects.filter(slug_title=slugify(ticket.title)):
+                existant_ticket = get_object_or_404(
+                    Ticket, slug_title=slugify(ticket.title)
+                )
                 messages.info(request, " ⚠️ Demande de critique déjà existante")
 
                 return redirect("ticket_detail", existant_ticket.id)
@@ -182,8 +207,10 @@ def ticket_self_review_create(request):
             review.ticket = selfReview.ticket = ticket
             review.self_review = selfReview
 
-            if Ticket.objects.filter(slug=slugify(ticket.title)):
-                existant_ticket = get_object_or_404(Ticket, slug=slugify(ticket.title))
+            if Ticket.objects.filter(slug_title=slugify(ticket.title)):
+                existant_ticket = get_object_or_404(
+                    Ticket, slug_title=slugify(ticket.title)
+                )
                 messages.info(request, " ⚠️ Demande de critique déjà existante")
 
                 return redirect("ticket_detail", existant_ticket.id)
@@ -415,9 +442,7 @@ def relation(request):
                 return redirect("relation")
 
             # test if the connected user does not block the entered user
-            if Relation.objects.filter(
-                user_1=request.user, type="blocks", user_2=relation.user_2
-            ):
+            if Relation.objects.filter(user_1=request.user, type="blocks", user_2=user):
                 messages.error(
                     request,
                     " 🚫 Utilisateur bloqué ! Veuillez le débloquer avant de pouvoir le suivre.",
@@ -426,9 +451,7 @@ def relation(request):
                 return redirect("relation")
 
             # test if the entered user does not block the connected user
-            if Relation.objects.filter(
-                user_1=relation.user_2, type="blocks", user_2=request.user
-            ):
+            if Relation.objects.filter(user_1=user, type="blocks", user_2=request.user):
                 messages.error(request, " 🚫 Abonnement non autorisé !")
 
                 return redirect("relation")
@@ -500,3 +523,81 @@ def relation_block(request, relation_id):
     messages.success(request, f" ✅ Vous avez bloqué {blocked_user} !")
 
     return redirect("relation")
+
+
+@login_required
+def search(request):
+    search_by_title_form = TicketSearchByTitleForm()
+    search_by_author_form = TicketSearchByAuthorForm()
+    search_by_year_form = TicketSearchByYear()
+
+    if request.method == "POST":
+        if "title" in request.POST:
+            search_by_title_form = TicketSearchByTitleForm(request.POST)
+            if search_by_title_form.is_valid():
+                title = search_by_title_form.cleaned_data["title"]
+                if Review.objects.filter(ticket__slug_title=slugify(title)):
+                    qs = Review.objects.filter(
+                        ticket__slug_title=slugify(title), is_self_review=False
+                    )
+                    messages.success(
+                        request,
+                        f" ✅  {len(qs)} résultat(s) trouvé(s) !",
+                    )
+                    page_obj = paginator(request, qs)
+
+                    return render(request, "review/home.html", {"page_obj": page_obj})
+
+                messages.error(request, " ❌ Aucun résultat trouvé !")
+
+                return redirect("search")
+
+        if "author" in request.POST:
+            search_by_author_form = TicketSearchByAuthorForm(request.POST)
+            if search_by_author_form.is_valid():
+                author = search_by_author_form.cleaned_data["author"]
+                if Review.objects.filter(ticket__slug_author=slugify(author)):
+                    qs = Review.objects.filter(
+                        ticket__slug_author=slugify(author), is_self_review=False
+                    )
+                    messages.success(
+                        request,
+                        f" ✅  {len(qs)} résultat(s) trouvé(s)",
+                    )
+                    page_obj = paginator(request, qs)
+
+                    return render(request, "review/home.html", {"page_obj": page_obj})
+
+                messages.error(request, " ❌ Aucun résultat trouvé !")
+
+                return redirect("search")
+
+        if "year" in request.POST:
+            search_by_year_form = TicketSearchByYear(request.POST)
+            if search_by_year_form.is_valid():
+                year = search_by_year_form.cleaned_data["year"]
+                if Review.objects.filter(ticket__release_date=year):
+                    qs = Review.objects.filter(
+                        ticket__release_date=year, is_self_review=False
+                    )
+                    messages.success(
+                        request,
+                        f" ✅  {len(qs)} résultat(s) trouvé(s)",
+                    )
+                    page_obj = paginator(request, qs)
+
+                    return render(request, "review/home.html", {"page_obj": page_obj})
+
+                messages.error(request, " ❌ Aucun résultat trouvé !")
+
+                return redirect("search")
+
+    return render(
+        request,
+        "review/search.html",
+        {
+            "search_by_title_form": search_by_title_form,
+            "search_by_author_form": search_by_author_form,
+            "search_by_year_form": search_by_year_form,
+        },
+    )
