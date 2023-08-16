@@ -7,25 +7,25 @@ from django.utils.text import slugify
 
 
 from authentication.models import User
-from review.models import Ticket, Review, Follower
-from review.forms import TicketForm, ReviewForm, FollowerForm
+from review.models import Ticket, Review, Relation
+from review.forms import TicketForm, ReviewForm, RelationForm
 
 
-# OK
 @login_required
 def forbidden_permission(request):
     return render(request, "forbidden_permission.html")
 
 
-# OK
 @login_required
 def home(request):
-    """homepage view"""
+    """homepage view.
+    read tickets and reviews posted by the connected user and the users he follows"""
 
     # requête inversée ? ici
-    followed_users = Follower.objects.filter(user=request.user).values_list(
-        "followed_user", flat=True
-    )
+    followed_users = Relation.objects.filter(
+        user_1=request.user, type="follows"
+    ).values_list("user_2", flat=True)
+
     reviews = Review.objects.filter(
         (Q(is_self_review=False))
         & (
@@ -43,10 +43,10 @@ def home(request):
     return render(request, "review/home.html", {"page_obj": page_obj})
 
 
-# OK
 @login_required
 def posts(request):
-    """posts view"""
+    """posts view.
+    read tickets and reviews posted by the connected user"""
 
     reviews = Review.objects.filter(
         Q(is_self_review=False) & (Q(user=request.user) | Q(ticket__user=request.user))
@@ -59,27 +59,36 @@ def posts(request):
     return render(request, "review/posts.html", {"page_obj": page_obj})
 
 
-# OK
 @login_required
 def ticket_detail(request, ticket_id):
-    """ticket view"""
+    """ticket view
+    Display a ticket and its reviews using the ticket_id field"""
 
     review = get_object_or_404(Review, ticket__id=ticket_id, is_self_review=False)
+
+    if Relation.objects.filter(
+        user_1=review.ticket.user, type="blocks", user_2=request.user
+    ):
+        return redirect("forbidden_permission")
 
     return render(request, "review/ticket_detail.html", {"review": review})
 
 
-# OK
 @login_required
 def review_detail(request, review_id):
-    """review detail view"""
+    """review detail view
+    Display a ticket and its reviews using the review_id field"""
 
     review = get_object_or_404(Review, id=review_id)
+
+    if Relation.objects.filter(
+        user_1=review.ticket.user, type="blocks", user_2=request.user
+    ):
+        return redirect("forbidden_permission")
 
     return render(request, "review/review_detail.html", {"review": review})
 
 
-# OK
 @login_required
 def ticket_create(request):
     """ticket creation view"""
@@ -111,10 +120,9 @@ def ticket_create(request):
     return render(request, "review/ticket_create.html", {"form": form})
 
 
-# OK
 @login_required
 def ticket_delete(request, ticket_id):
-    """ticket delete view"""
+    """ticket deletion view"""
 
     ticket = get_object_or_404(Ticket, id=ticket_id)
     if ticket.user != request.user:
@@ -129,10 +137,9 @@ def ticket_delete(request, ticket_id):
     return render(request, "review/ticket_delete.html", {"ticket": ticket})
 
 
-# OK
 @login_required
 def ticket_update(request, ticket_id):
-    """ticket update view"""
+    """ticket updating view"""
 
     ticket = get_object_or_404(Ticket, id=ticket_id)
     review = get_object_or_404(Review, ticket__id=ticket_id, is_self_review=False)
@@ -155,10 +162,11 @@ def ticket_update(request, ticket_id):
     return render(request, "review/ticket_update.html", {"form": form})
 
 
-# OK
 @login_required
 def ticket_self_review_create(request):
-    """ticket and self review creation view"""
+    """ticket and self review creation view
+    when the ticket author is also the review author :
+    the review is tagged as a self_review"""
 
     if request.method == "POST":
         ticket_form = TicketForm(request.POST, request.FILES)
@@ -199,10 +207,11 @@ def ticket_self_review_create(request):
     )
 
 
-# OK
 @login_required
 def self_review_create(request, review_id):
-    """self review creation"""
+    """self review creation view
+    when the ticket author is also the review author :
+    the review is tagged as a self_review"""
 
     review = get_object_or_404(Review, id=review_id)
 
@@ -235,10 +244,9 @@ def self_review_create(request, review_id):
     )
 
 
-# OK
 @login_required
 def self_review_delete(request, review_id):
-    """delete self review"""
+    """self review deletion view"""
 
     review = get_object_or_404(Review, id=review_id)
 
@@ -260,10 +268,9 @@ def self_review_delete(request, review_id):
     return render(request, "review/review_delete.html", {"review": review})
 
 
-# OK
 @login_required
 def self_review_update(request, review_id):
-    """self review update"""
+    """self review updating view"""
 
     review = get_object_or_404(Review, id=review_id)
 
@@ -286,10 +293,11 @@ def self_review_update(request, review_id):
     )
 
 
-# OK
 @login_required
 def review_create(request, review_id):
-    """tierce review creation"""
+    """tierce review creation view
+    when the ticket author and the review author are different
+    """
 
     review = get_object_or_404(Review, id=review_id)
 
@@ -321,10 +329,9 @@ def review_create(request, review_id):
     return redirect("forbidden_permission")
 
 
-# OK
 @login_required
 def review_delete(request, review_id):
-    """delete tierce review"""
+    """tierce review deletion view"""
 
     review = get_object_or_404(Review, id=review_id)
 
@@ -346,10 +353,9 @@ def review_delete(request, review_id):
     return render(request, "review/review_delete.html", {"review": review})
 
 
-# OK
 @login_required
 def review_update(request, review_id):
-    """review update"""
+    """review updating view"""
 
     review = get_object_or_404(Review, id=review_id)
 
@@ -371,65 +377,126 @@ def review_update(request, review_id):
     )
 
 
-# OK (ajouter bloquer un utilisateur ?)
 @login_required
-def follower(request):
-    follow = Follower()
-    form = FollowerForm()
-    followed_users = Follower.objects.filter(user=request.user)
-    followers = Follower.objects.filter(followed_user=request.user)
+def relation(request):
+    """create and read relations
+    a relation is:
+    - user_1 follows or blocks user_2"""
+
+    relation = Relation()
+    form = RelationForm()
+    followed_users = Relation.objects.filter(user_1=request.user, type="follows")
+    followers = Relation.objects.filter(user_2=request.user, type="follows")
+    blocked_users = Relation.objects.filter(user_1=request.user, type="blocks")
 
     if request.method == "POST":
-        form = FollowerForm(request.POST)
+        form = RelationForm(request.POST)
         if form.is_valid():
-            if request.user.username == form.cleaned_data["followed_user"]:
+            # test if the entered user exists
+            try:
+                user = User.objects.get(username=form.cleaned_data["followed_user"])
+            except User.DoesNotExist:
+                messages.error(request, " 🚫 Cet utilisateur n'existe pas !")
+
+                return redirect("relation")
+
+            # test if the connected user the entered user are different
+            if request.user.username == user.username:
                 messages.error(request, " 🚫 Abonnement non autorisé !")
 
-                return redirect("follower")
+                return redirect("relation")
 
-            follow.user = request.user
-            follow.followed_user = get_object_or_404(
-                User, username=form.cleaned_data["followed_user"]
-            )
-
-            if Follower.objects.filter(
-                user=request.user, followed_user=follow.followed_user
+            # test if the relation is already created
+            if Relation.objects.filter(
+                user_1=request.user, type="follows", user_2=user
             ):
                 messages.error(request, " 🚫 Abonnement déjà existant !")
 
-                return redirect("follower")
+                return redirect("relation")
 
-            follow.save()
+            # test if the connected user does not block the entered user
+            if Relation.objects.filter(
+                user_1=request.user, type="blocks", user_2=relation.user_2
+            ):
+                messages.error(
+                    request,
+                    " 🚫 Utilisateur bloqué ! Veuillez le débloquer avant de pouvoir le suivre.",
+                )
+
+                return redirect("relation")
+
+            # test if the entered user does not block the connected user
+            if Relation.objects.filter(
+                user_1=relation.user_2, type="blocks", user_2=request.user
+            ):
+                messages.error(request, " 🚫 Abonnement non autorisé !")
+
+                return redirect("relation")
+
+            relation.user_1 = request.user
+            relation.type = "follows"
+            relation.user_2 = user
+            relation.save()
 
             messages.success(
                 request,
-                f" ✅ Abonnement à {follow.followed_user} crée avec succès !",
+                f" ✅ Abonnement à {relation.user_2} crée avec succès !",
             )
 
-            return redirect("follower")
+            return redirect("relation")
 
     return render(
         request,
-        "review/follower.html",
+        "review/relation.html",
         {
             "form": form,
             "followed_users": followed_users,
             "followers": followers,
+            "blocked_users": blocked_users,
         },
     )
 
 
-# OK
 @login_required
-def follower_delete(request, follower_id):
-    follower = get_object_or_404(Follower, id=follower_id)
+def relation_delete(request, relation_id):
+    """delete a relation"""
 
-    if request.user != follower.user:
+    relation = get_object_or_404(Relation, id=relation_id)
+
+    if relation.user_1 != request.user:
         return redirect("forbidden_permission")
 
-    followed_user = follower.followed_user
-    follower.delete()
+    deleted_user = relation.user_2
+    relation_type = relation.type
+    relation.delete()
 
-    messages.success(request, f" ✅ Abonnement à {followed_user} supprimé avec succès !")
+    if relation_type == "follows":
+        messages.success(
+            request, f" ✅ Abonnement à {deleted_user} supprimé avec succès !"
+        )
+    else:
+        messages.success(request, f" ✅ {deleted_user} à été débloqué avec succès !")
 
-    return redirect("follower")
+    return redirect("relation")
+
+
+@login_required
+def relation_block(request, relation_id):
+    """change "user_1 follows user_2" to
+    user_2 blocks user_1"""
+
+    relation = get_object_or_404(Relation, id=relation_id)
+
+    if relation.user_2 != request.user:
+        return redirect("forbidden_permission")
+
+    blocked_user = relation.user_1
+
+    relation.user_1 = request.user
+    relation.type = "blocks"
+    relation.user_2 = blocked_user
+    relation.save()
+
+    messages.success(request, f" ✅ Vous avez bloqué {blocked_user} !")
+
+    return redirect("relation")

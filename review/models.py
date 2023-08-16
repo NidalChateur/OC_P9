@@ -9,6 +9,8 @@ EMPTY_STAR = "☆"
 
 
 class Ticket(models.Model):
+    """fields of the book or article."""
+
     title = models.CharField(
         max_length=128,
         verbose_name="Titre",
@@ -42,6 +44,9 @@ class Ticket(models.Model):
 
 
 class Review(models.Model):
+    """fields of the review.
+    If the author of the ticket and the review are the same : it is a self_review ! """
+
     rating = models.IntegerField(
         verbose_name="Note",
         validators=[MinValueValidator(0), MaxValueValidator(5)],
@@ -94,24 +99,37 @@ class Review(models.Model):
         super().save(*args, **kwargs)
 
 
-class Follower(models.Model):
-    user = models.ForeignKey(
+class Relation(models.Model):
+    """offer users the ability to follow or block other users"""
+
+    # user_1 can follow or block user_2
+    user_1 = models.ForeignKey(
         to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="follower"
     )
-    followed_user = models.ForeignKey(
+    # user_2 can followed or blocked by user_1
+    user_2 = models.ForeignKey(
         verbose_name="Nom d'utilisateur",
         to=settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name="followed",
     )
+    # type of the relation : 'follows' or 'blocks'
+    type = models.CharField(
+        max_length=128,
+        null=True,
+        choices=(
+            ("blocks", "blocks"),
+            ("follows", "follows"),
+        ),
+    )
     description = models.CharField(max_length=255, null=True)
 
     class Meta:
         unique_together = (
-            "user",
-            "followed_user",
+            "user_1",
+            "user_2",
         )
 
     def save(self, *args, **kwargs):
-        self.description = f"{str(self.user).capitalize()} follows {str(self.followed_user).capitalize()}"
+        self.description = f"{str(self.user_1).capitalize()} {self.type} {str(self.user_2).capitalize()}"
         super().save(*args, **kwargs)

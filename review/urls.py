@@ -16,8 +16,9 @@ from review.views import (
     self_review_delete,
     review_update,
     self_review_update,
-    follower,
-    follower_delete
+    relation,
+    relation_delete,
+    relation_block
 )
 
 
@@ -56,7 +57,8 @@ urlpatterns = [
         self_review_update,
         name="self_review_update",
     ),
-    # follower
-    path("follower/", follower, name="follower"),
-    path("follower/<int:follower_id>/delete", follower_delete, name="follower_delete"),
+    # relation
+    path("relations/", relation, name="relation"),
+    path("relations/<int:relation_id>/delete", relation_delete, name="relation_delete"),
+    path("relations/<int:relation_id>/block", relation_block, name="relation_block"),
 ]

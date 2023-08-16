@@ -1,7 +1,6 @@
 from django import forms
 
 from review.models import Ticket, Review
-from review.validators import validate_followed_user
 
 
 class TicketForm(forms.ModelForm):
@@ -27,7 +26,8 @@ class ReviewForm(forms.ModelForm):
     )
 
 
-class FollowerForm(forms.Form):
+class RelationForm(forms.Form):
     followed_user = forms.CharField(
-        max_length=128, label="Nom d'utilisateur", validators=[validate_followed_user]
+        max_length=128,
+        label="Nom d'utilisateur",
     )
