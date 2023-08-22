@@ -4,12 +4,18 @@ from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
 
+from PIL import Image
+
+from authentication.models import User
+
 FULL_STAR = "★"
 EMPTY_STAR = "☆"
 
 
 class Ticket(models.Model):
     """fields of the book or article."""
+
+    WIDTH = User.WIDTH
 
     title = models.CharField(
         max_length=128,
@@ -42,7 +48,24 @@ class Ticket(models.Model):
         return f"{self.title}"
 
     def resize_image(self):
-        pass
+        """Resize the image while maintaining the original height/width aspect ratio
+        width == 200px"""
+
+        if self.image:
+            image = Image.open(self.image)
+
+            # get the original height/width aspect ratio
+            width, height = image.size
+
+            # get the new height/width aspect ratio
+            new_width = self.WIDTH
+            new_height = int(height * (new_width / width))
+
+            # resize the image
+            image = image.resize((new_width, new_height), Image.LANCZOS)
+
+            # Save
+            image.save(self.image.path)
 
     def save(self, *args, **kwargs):
         # modification time
@@ -59,6 +82,7 @@ class Ticket(models.Model):
             self.slug_author = slugify(self.author)
 
         super().save(*args, **kwargs)
+        self.resize_image()
 
 
 class Review(models.Model):
@@ -123,7 +147,7 @@ class Review(models.Model):
         # overall_rating
         if self.rating and self.self_review:
             self.overall_rating = self.rating + self.self_review.rating
-        elif self.rating :
+        elif self.rating:
             self.overall_rating = self.rating
         elif self.self_review:
             self.overall_rating = self.self_review.rating

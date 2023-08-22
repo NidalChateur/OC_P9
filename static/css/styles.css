@@ -27,11 +27,15 @@
   width: 40%;
 }
 /* les image des tickets */
-.image {
+/* .image {
   width: 40%;
-}
-.profile_photo {
-  width: 10%;
+} */
+/* .profile_photo{
+ width: 10% ;
+} */
+.rounded-circle {
+  /* width: 30px; */
+  height: 30px;
 }
 /* id_rating correspond aux bouton radio */
 #id_rating {

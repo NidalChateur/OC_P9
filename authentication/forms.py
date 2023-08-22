@@ -8,10 +8,10 @@ class SignupForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = get_user_model()
-        fields = ("username", "email", "first_name", "last_name", "photo")
+        fields = ("username", "email", "first_name", "last_name", "image")
 
 
 class ProfileForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
-        fields = ("photo", "first_name", "last_name", "email")
+        fields = ("image", "first_name", "last_name", "email")

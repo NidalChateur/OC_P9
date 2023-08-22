@@ -6,15 +6,15 @@
 
   <h2>Mon profil</h2>
 
-  {% if user.photo %}
+  {% if user.image %}
     <p>
-      <img src="{{user.photo.url}}" alt="profile_photo" class="profile_photo" />
+      <img src="{{user.image.url}}" alt="photo de profile" class="profile_photo" />
     </p>
   {% else %}
     <p>
       <img
         src="{% static 'img/default_profile.png' %}"
-        alt=""
+        alt="photo de profile"
         class="profile_photo"
       />
     </p>
