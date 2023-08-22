@@ -1,6 +1,3 @@
-* {
-  color: purple;
-}
 .comment {
   border: black 1px dotted;
   padding: 1%;
@@ -42,33 +39,24 @@
   display: flex;
   justify-content: space-around;
 }
-/* bouton submit */
-[type="submit"] {
-  color: purple;
-}
 
-p a {
-  text-decoration: none;
-}
 .success {
   padding: 0.5%;
   background-color: #dfd;
 }
 /* message flash type error */
-.error{
+.error {
   padding: 0.5%;
   background-color: rgb(255, 229, 169);
-
-} 
+}
 /* message flash type succès */
-.info{
+.info {
   padding: 0.5%;
   background-color: rgb(255, 229, 169);
-
-} 
-.navigator{
+}
+.navigator {
   margin: 1%;
 }
-button{
+button {
   cursor: pointer;
 }
