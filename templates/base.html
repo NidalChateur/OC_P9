@@ -57,37 +57,70 @@
             <!-- class div.collapse should be equal to button.  -->
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
               <ul class="navbar-nav">
-
                 <li class="nav-item active">
-                  <a class="nav-link" href="{% url 'home' %}">Flux</a>
+                  
+                    <a class="nav-link
+                    {% if request.path == '/home/' %} 
+                      active
+                      border-bottom border-dark border-2
+                    {% endif %}" 
+                    href="{% url 'home' %}">
+                      <i class="bi bi-house"></i>Flux</a>
                 </li>
 
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'ranking' %}">Classement</a>
+                  <a class="nav-link
+                  {% if request.path == '/ranking/' %} 
+                    active
+                    border-bottom border-dark border-2
+                  {% endif %}" 
+                  href="{% url 'ranking' %}"><i class="bi bi-graph-down"></i>Classement</a>
                 </li>
 
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'posts' %}">Posts</a>
+                  <a class="nav-link
+                  {% if request.path == '/posts/' %} 
+                    active
+                    border-bottom border-dark border-2
+                  {% endif %}" 
+                   href="{% url 'posts' %}"><i class="bi bi-files"></i>Posts</a>
                 </li>
 
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'search' %}">Rechercher</a>
+                  <a class="nav-link
+                  {% if request.path == '/search/' %} 
+                    active
+                    border-bottom border-dark border-2
+                  {% endif %}" 
+                  href="{% url 'search' %}"><i class="bi bi-search"></i>Rechercher</a>
                 </li>
 
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'relation' %}">Abonnements</a>
+                  <a class="nav-link
+                  {% if request.path == '/relations/' %} 
+                    active
+                    border-bottom border-dark border-2
+                  {% endif %}" 
+                  href="{% url 'relation' %}"><i class="bi bi-people"></i>Abonnements</a>
                 </li>
 
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'profile' %}">Mon profil</a>
+                  <a class="nav-link
+                  {% if request.path == '/profile/' %} 
+                    active
+                    border-bottom border-dark border-2
+                  {% endif %}" 
+                  href="{% url 'profile' %}">
+                  <i class="bi bi-person"></i>Mon profil</a>
                 </li>
                 
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'logout' %}">Se déconnecter</a>
+                  <a class="nav-link" href="{% url 'logout' %}"><i class="bi bi-power"></i>Déconnexion</a>
                 </li>
 
               </ul>
             </div>
+            
           {% endif %}
 
         </div>
