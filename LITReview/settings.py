@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import sys
 
 from decouple import config
 
@@ -42,7 +43,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "authentication",
     "review",
+    # "django_bootstrap5",
 ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",

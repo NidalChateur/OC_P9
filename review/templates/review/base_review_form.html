@@ -20,7 +20,7 @@
 			<h3>Critique</h3>
 
 			{% for field in form %}
-					<p><label for="{{ field.id_for_label }}">{{ field.label }}</label></p>
+					<p><label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label></p>
 					<p>{{ field }}</p>
 			{% endfor %}
 

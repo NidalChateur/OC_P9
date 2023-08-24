@@ -35,3 +35,4 @@ def get_posted_at_display(posted_at: timezone) -> str:
         return "il y a une heure"
 
     return f"il y a {int(seconds_ago // HOUR)} heures."
+

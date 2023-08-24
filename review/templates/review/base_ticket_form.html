@@ -2,26 +2,40 @@
 
 {% block content %}
 
-  {% block title %}
-    <!-- <h1>Modifier votre ticket</h1> -->
-    <!-- <h1>Créer un nouveau ticket</h1> -->
-  {% endblock title %}
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        {% block title %}
+          <!-- <h1>Modifier votre ticket</h1> -->
+          <!-- <h1>Créer un nouveau ticket</h1> -->
+        {% endblock title %}
+    
+      <div class="ticket">
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <h3>Livre / Article</h3>
+    
+          {% for field in form %}
+            <p><label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label></p>
+            <p>{{ field }}</p>
+          {% endfor %}
+    
+          <div class="row">
+            <div class="col-12 text-end">
+              {% block button %}
+                <!-- <button type="submit">Enregistrer</button> -->
+                <!-- <button type="submit">Publier</button> -->
+              {% endblock button %}
+            </div>
+          </div>
 
-  <div class="ticket">
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <h3>Livre / Article</h3>
+        </form>
 
-      {% for field in form %}
-        <p><label for="{{ field.id_for_label }}">{{ field.label }}</label></p>
-        <p>{{ field }}</p>
-      {% endfor %}
+      </div>
 
-      {% block button %}
-        <!-- <button type="submit">Enregistrer</button> -->
-        <!-- <button type="submit">Publier</button> -->
-      {% endblock button %}
 
-    </form>
+
+      </div>
+    </div>
   </div>
 {% endblock content %}

@@ -1,21 +1,13 @@
-<!-- <p>
-  <a href="{% url 'ticket_create' %}">
-    <button>Demander une critique</button>
-  </a>        
-  <a href="{% url 'ticket_self_review_create' %}">
-    <button>Créer une critique</button>
-  </a>
-</p> -->
 <div class="container">
   <div class="row">
     <div class="col-12 text-center">
       <div class="btn-group" role="group" aria-label="Basic outlined example">
-        <a href="{% url 'ticket_create' %}" role="button" class="btn btn-outline-dark"
-          ><i class="bi bi-plus-circle"></i> Demander une critique</a
-        >
-        <a href="{% url 'ticket_self_review_create' %}" role="button" class="btn btn-outline-dark"
-          ><i class="bi bi-plus-circle"></i> Créer une critique</a
-        >
+        <a href="{% url 'ticket_create' %}" role="button" class="btn btn-outline-dark">
+          Demander une critique
+        </a>
+        <a href="{% url 'ticket_self_review_create' %}" role="button" class="btn btn-outline-dark">
+          Créer une critique
+        </a>
       </div>
     </div>
   </div>

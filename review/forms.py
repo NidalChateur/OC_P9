@@ -1,3 +1,4 @@
+from tkinter import Widget
 from django import forms
 
 from review.models import Ticket, Review
@@ -17,6 +18,15 @@ class TicketForm(forms.ModelForm):
             "image",
         ]
 
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-control"}),
+            "author": forms.TextInput(attrs={"class": "form-control"}),
+            "release_date": forms.NumberInput(attrs={"class": "form-control"}),
+            "product_type": forms.Select(attrs={"class": "form-control"}),
+            "description": forms.Textarea(attrs={"class": "form-control"}),
+            "image": forms.FileInput(attrs={"class": "form-control"}),
+        }
+
 
 class ReviewForm(forms.ModelForm):
     """review form"""
@@ -24,6 +34,12 @@ class ReviewForm(forms.ModelForm):
     class Meta:
         model = Review
         fields = ["headline", "rating", "body"]
+
+        widgets = {
+            "headline": forms.TextInput(attrs={"class": "form-control"}),
+            "rating": forms.RadioSelect(attrs={"class": "form-control"}),
+            "body": forms.Textarea(attrs={"class": "form-control"}),
+        }
 
     rating = forms.IntegerField(
         widget=forms.RadioSelect(

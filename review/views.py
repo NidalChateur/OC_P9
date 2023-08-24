@@ -7,6 +7,7 @@ from django.utils.text import slugify
 
 
 from authentication.models import User
+from authentication.views import add_form_control_class
 from review.models import Ticket, Review, Relation
 from review.forms import (
     TicketForm,
@@ -225,7 +226,9 @@ def ticket_self_review_create(request):
 
     else:
         ticket_form = TicketForm()
+        add_form_control_class(ticket_form)
         self_review_form = ReviewForm()
+        # add_form_control_class(self_review_form)
 
     return render(
         request,
