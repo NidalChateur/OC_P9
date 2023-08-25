@@ -1,14 +1,13 @@
-<div class="container">
-  <div class="row">
-    <div class="col-12 text-center">
-      <div class="btn-group" role="group" aria-label="Basic outlined example">
-        <a href="{% url 'ticket_create' %}" role="button" class="btn btn-outline-dark">
-          Demander une critique
-        </a>
-        <a href="{% url 'ticket_self_review_create' %}" role="button" class="btn btn-outline-dark">
-          Créer une critique
-        </a>
-      </div>
+<div class="row my-3">
+  <div class="col-12 ms-2 ms-md-0 text-center ">
+    <div class="btn-group" role="group" aria-label="Basic outlined example">
+      <a href="{% url 'ticket_create' %}" role="button" class="btn btn-outline-dark">
+        Demander une critique
+      </a>
+      <a href="{% url 'ticket_self_review_create' %}" role="button" class="btn btn-outline-dark">
+        Créer une critique
+      </a>
     </div>
   </div>
 </div>
+

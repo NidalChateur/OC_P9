@@ -1,30 +1,57 @@
 {% extends 'base.html' %} 
-
 {% block content %} 
-
   {% load static %}
 
-  <h2>Mon profil</h2>
+  <h1 class="text-center my-3">Mon profil</h1>
 
-  {% if user.image %}
+  <div class="col-12 offset-lg-3 col-lg-6">
+    {% if user.image %}
     <p>
-      <img src="{{user.image.url}}" alt="photo de profile" class="profile_photo" />
+      <img src="{{user.image.url}}" alt="photo de profile" class="profile_photo rounded border border-dark" />
     </p>
-  {% else %}
-    <p>
-      <img
-        src="{% static 'img/default_profile.png' %}"
-        alt="photo de profile"
-        class="profile_photo"
-      />
-    </p>
-  {% endif %}
+    {% else %}
+      <p>
+        <img
+          src="{% static 'img/default_profile.png' %}"
+          alt="photo de profile"
+          class="profile_photo rounded border border-dark"
+        />
+      </p>
+    {% endif %}
   
-  <p>Prénom : {{user.first_name|capfirst}}</p>
-  <p>Nom de famille : {{user.last_name|capfirst}}</p>
-  <p>Adresse électronique : {{user.email}}</p>
+    <p>Prénom : 
+      {% if user.first_name %}
+        {{user.first_name|capfirst}}
+      {% else %}
+        (non renseigné)
+      {% endif%}
+    </p>
+    <p>Nom de famille :
+      {% if user.last_name %}
+        {{user.first_name|capfirst}}
+      {% else %}
+        (non renseigné)
+      {% endif%} 
+      {{user.last_name|capfirst}}</p>
+    <p>Adresse électronique : 
+      {% if user.email %}
+        {{user.email}}
+      {% else %}
+        (non renseigné)
+      {% endif%}
+    </p>
 
-  <p><a href="{% url 'profile_update' %}">Modifier mon profil</a></p>
-  <p><a href="{% url 'password_change' %}">Changer de mot de passe</a></p>
+    <p class="mt-5">
+      <a href="{% url 'profile_update' %}" role="button" class="btn btn-dark w-100">
+        Modifier mon profil
+      </a>
+    </p>
+    <p>
+      <a href="{% url 'password_change' %}" role="button" class="btn btn-dark w-100">
+        Changer de mot de passe
+      </a>
+    </p>
+  </div>
+
 
 {% endblock content %}

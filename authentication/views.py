@@ -8,18 +8,10 @@ from django.conf import settings
 from authentication import forms
 
 
-def add_form_control_class(form):
-    """add class="form-control" to <input>"""
-
-    for field in form.fields.values():
-        field.widget.attrs["class"] = "form-control"
-
-
 def signup(request):
     """signup view"""
 
     form = forms.SignupForm()
-    add_form_control_class(form)
 
     if request.method == "POST":
         form = forms.SignupForm(request.POST)

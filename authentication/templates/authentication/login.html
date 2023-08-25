@@ -1,18 +1,34 @@
 {% extends "base.html" %} 
 
-  {% block content %}
+{% block content %}
+  {% load django_bootstrap5 %}
+  {% load static %}
+  <div class="col-lg-4 offset-lg-0 offset-1 col-10">
+
+    <div class="row mt-5 my-2 pb-4">
+      <form method="POST" class="my-4">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button type="submit" class="btn btn-dark w-100">Se connecter</button>
+      </form>
+      <a href="{% url 'password_reset' %}" class="text-dark">
+        Mot de passe oublié ?
+      </a>
+    </div>
+
+    <div class="row my-4">
+      <p class="border-top">
+        <a href="{% url 'signup' %}" role="button" class="btn btn-dark w-100 my-5 border-top ">
+          Nouveau sur LITReview ? S'inscrire
+        </a>
+      </p>
+
+    </div>
+  </div>
+
+  <div class="offset-lg-1 col-lg-7 p-5 d-lg-block d-none">
+    <h1 class="fw-light">Publier, demander, consulter des critiques de livres ou d'articles.</h1>
+    <img src="{% static 'img/review.jpg' %}" alt="image de critique" class="w-100 rounded">
+  </div>
   
-    <form action="" method="POST">
-      {% csrf_token %}
-      {{ form.as_p }}
-      <button type="submit">Se connecter</button>
-    </form>
-  
-    <p><a href="{% url 'password_reset' %}">Mot de passe oublié</a></p>
-  
-    <p>
-      Pas encore membre ?
-      <a href="{% url 'signup' %}">Inscrivez-vous maintenant !</a>
-    </p>
-  
-  {% endblock content %}
+{% endblock content %}

@@ -1,6 +1,7 @@
 {% extends "base.html" %} 
 
-{% block content %} 
+{% block content %}
+	{% load django_bootstrap5 %}
 
 	{% block title %}
 		<!-- <h2>Créer votre critique</h2> -->
@@ -11,7 +12,6 @@
 		<h3>Vous êtes en train de poster en réponse à</h3>
 		{% include "review/partials/1c_read_ticket.html" %}
 	</div>
-	
 
 	<div class="review_form">
 		<form method="post">

@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "authentication",
     "review",
-    # "django_bootstrap5",
+    "django_bootstrap5",
 ]
 
 
