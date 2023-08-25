@@ -5,7 +5,7 @@
 
   <h1 class="text-center m-3">Créer une critique</h1>
 
-  <div class="col-12 offset-lg-2 col-lg-8 d-flex justify-content-center">
+  <div class="col-12 offset-lg-2 col-lg-8">
     <form method="post" enctype="multipart/form-data" 
       class="w-100  border rounded border-light shadow-lg">
 
@@ -16,7 +16,7 @@
         {% bootstrap_form ticket_form %}
       </div>
 
-      <div class="w-100 p-4 border border-top">
+      <div class="w-100 p-4 border-top">
         <h3>Critique</h3>
         {% bootstrap_form review_form %}
         {% include "review/partials/button_publish.html" %}
