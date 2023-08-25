@@ -9,9 +9,7 @@ class User(AbstractUser):
 
     WIDTH = 200
 
-    image = models.ImageField(
-        verbose_name="Photo de profil", blank=True, null=True, default=None
-    )
+    image = models.ImageField(verbose_name="Photo de profil", blank=True, null=True)
 
     def __str__(self):
         return f"{str(self.username).capitalize()}"
@@ -19,7 +17,7 @@ class User(AbstractUser):
     def resize_image(self):
         """Resize the image while maintaining the original height/width aspect ratio
         width == 200px"""
-        
+
         if self.image:
             image = Image.open(self.image)
 
