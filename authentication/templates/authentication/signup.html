@@ -3,17 +3,21 @@
 {% block content %}
     {% load django_bootstrap5 %}
 
-    <h1>Inscription</h1>
-    {% if form.errors %}
-        {{ form.errors }}
-    {% endif %}
+    <h1 class="text-center my-4 mb-5">Inscription</h1>
 
-    <form method="post">
-        {% bootstrap_form form %}
-        {% csrf_token %}
-        <button type="submit" class="btn btn-dark w-100">
-            S’inscrire
-        </button>
-    </form>
+    <div class="col-12 col-lg-8 offset-lg-2 p-4 border rounded border-light shadow-lg">
+        {% if form.errors %}
+        {   { form.errors }}
+        {% endif %}
+
+        <form method="post">
+            {% bootstrap_form form %}
+            {% csrf_token %}
+            <button type="submit" class="btn btn-dark w-100 mt-2">
+                S’inscrire
+            </button>
+        </form>
+
+    </div>
 
 {% endblock content %}
