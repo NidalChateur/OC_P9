@@ -1,3 +1,4 @@
+from logging import PlaceHolder
 from django import forms
 
 from review.models import Ticket, Review
@@ -53,14 +54,12 @@ class TicketSearchByTitleForm(forms.Form):
     title = forms.CharField(
         max_length=128,
         label="Titre",
+        
     )
 
 
 class TicketSearchByAuthorForm(forms.Form):
-    author = forms.CharField(
-        max_length=128,
-        label="Auteur",
-    )
+    author = forms.CharField(max_length=128, label="Auteur")
 
 
 class TicketSearchByYear(forms.Form):

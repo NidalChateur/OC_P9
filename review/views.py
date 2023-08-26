@@ -498,7 +498,7 @@ def relation_delete(request, relation_id):
             request, f" ✅ Abonnement à {deleted_user} supprimé avec succès !"
         )
     else:
-        messages.success(request, f" ✅ {deleted_user} à été débloqué avec succès !")
+        messages.success(request, f" ✅ {deleted_user} a été débloqué avec succès !")
 
     return redirect("relation")
 
@@ -548,7 +548,7 @@ def search(request):
 
                     return render(request, "review/home.html", {"page_obj": page_obj})
 
-                messages.error(request, " ❌ Aucun résultat trouvé !")
+                messages.info(request, " ❌ Aucun résultat trouvé !")
 
                 return redirect("search")
 
@@ -568,7 +568,7 @@ def search(request):
 
                     return render(request, "review/home.html", {"page_obj": page_obj})
 
-                messages.error(request, " ❌ Aucun résultat trouvé !")
+                messages.info(request, " ❌ Aucun résultat trouvé !")
 
                 return redirect("search")
 
@@ -588,7 +588,7 @@ def search(request):
 
                     return render(request, "review/home.html", {"page_obj": page_obj})
 
-                messages.error(request, " ❌ Aucun résultat trouvé !")
+                messages.info(request, " ❌ Aucun résultat trouvé !")
 
                 return redirect("search")
 

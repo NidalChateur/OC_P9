@@ -1,31 +1,44 @@
 {% extends 'base.html' %} 
 
 {% block content %}
+	{% load django_bootstrap5 %}
 
-    {% include 'review/partials/flash_message.html' %}
+	<h1 class="text-center my-3">Rechercher</h1>
 
+	{% include 'review/partials/flash_message.html' %}
 
-    <h1>Chercher un livre ou un article par son titre</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ search_by_title_form.as_p }} 
-        <button type="submit">Chercher</button>
-    </form>
+	<div class="col-12 offset-lg-3 col-lg-6">
 
-    <h1>Chercher un livre ou un article par son auteur</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ search_by_author_form.as_p }} 
-        <button type="submit">Chercher</button>
-    </form>
-
-    <h1>Chercher un livre ou un article par son année</h1>
-    <form method="post">
-        {% csrf_token %}
-        {{ search_by_year_form.as_p }} 
-        <button type="submit">Chercher</button>
-    </form>
+		<div class="row py-4 mb-4">
+			<form method="post">
+				{% csrf_token %}
+				{% bootstrap_form search_by_title_form %}
+				<button type="submit" class="btn btn-dark w-100">
+					Chercher par le titre
+				</button>
+			</form>
+		</div>
 
 
+		<div class="row py-4 mb-4 border-top">
+			<form method="post">
+				{% csrf_token %}
+				{% bootstrap_form search_by_author_form %}
+				<button type="submit" class="btn btn-dark w-100">
+					Chercher par auteur
+				</button>
+			</form>
+		</div>
 
+		<div class="row py-4 mb-4 border-top">
+			<form method="post">
+				{% csrf_token %}
+				{% bootstrap_form search_by_year_form %}
+				<button type="submit" class="btn btn-dark w-100">
+					Chercher par année
+				</button>
+			</form>
+		</div>
+
+</div>
 {% endblock content %}
