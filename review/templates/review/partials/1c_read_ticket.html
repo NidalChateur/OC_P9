@@ -1,6 +1,18 @@
 {% load custom_filters %}
 
-<div class="ticket">
+<!-- if button == True :
+          the ticket is displayed with its button and without border
+          because the border is in 1_read.html
+      else :
+          the ticket is displayed inside the review without button 
+          and with its border -->
+
+{% if button %}
+  <div class="p-3 bg-light">
+{% else %}
+  <div class="p-3 border border-secondary rounded bg-light">
+{% endif %}
+
   <p>
     {% if review.ticket.user == user %}
       Vous avez
@@ -47,26 +59,29 @@
   {% endif %} 
   
   {% if review.ticket.image %}
-    <p>
+    <p class="text-center">
       <img
         src="{{review.ticket.image.url}}"
-        alt="{{review.ticket.title|capfirst}} image"
-        class="image"
+        alt="image de {{review.ticket.title|capfirst}}"
+        class="shadow border border-3 border-secondary rounded-3"
       />
     </p>
   {% endif %} 
   
   {% if button %} 
-    {% if review.ticket.user == user %}
-      <p>
-        <button>
-          <a href="{% url 'ticket_update' review.ticket.id %}">Modifier le ticket</a>
-        </button>
-        <button>
-          <a href="{% url 'ticket_delete' review.ticket.id %}">Supprimer le ticket</a>
-        </button>
-      </p>
-    {% endif %} 
-    {% include "review/partials/1e_button_create_review.html" %}
+    <p class="text-center">
+      
+      {% include "review/partials/1e_button_create_review.html" %}
+
+      {% if review.ticket.user == user %}
+        <a href="{% url 'ticket_update' review.ticket.id %}" role="button" class="btn btn-dark w-lg-25 my-1">
+          Modifier le ticket <i class="bi bi-pencil-fill"></i>
+        </a>
+        <a href="{% url 'ticket_delete' review.ticket.id %}" role="button" class="btn btn-dark w-lg-25">
+          Supprimer le ticket <i class="fa fa-trash"></i>
+        </a>
+      {% endif %} 
+
+    </p>
 	{% endif %}
 </div>

@@ -1,7 +1,7 @@
 {% load custom_filters %}
 
 {% if review.self_review %}
-  <div class="comment">
+  <div class="p-2 pt-3 my-2 shadow border border-secondary rounded bg-light">
     <p>
       {% if review.self_review.user == user %}
         Vous avez

@@ -2,26 +2,21 @@
 
 {% block content %}
 
-	{% include 'review/partials/flash_message.html' %}
-
 	{% block title %}
-		<!-- <h1>Vos posts</h1> -->
+	<!-- <h1>Vos posts</h1> -->
 	{% endblock title %}
 
 	{% include "review/partials/create_menu.html" %}
 
+	{% include 'review/partials/flash_message.html' %}
 
 	{% for instance in page_obj %}
-
 		{% block read %}
 			<!-- {% include "1_read.html" with posts="True" %} -->
 			<!-- {% include "1_read.html" %} -->
 		{% endblock read %}
-
 	{% empty %}
-	
 		<p>Aucun post publié.</p>
-		
 	{% endfor %}
 	
 {% endblock content %}

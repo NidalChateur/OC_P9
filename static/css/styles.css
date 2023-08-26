@@ -1,24 +1,15 @@
 .comment {
   border: black 1px dotted;
-  padding: 1%;
+  /* padding: 1%;
   width: 90%;
-  margin-bottom: 1%;
-}
-/* .review {
-  border: black 1px solid;
+  margin-bottom: 1%; */
 }
 
-.review_form {
-  border: black 1px solid;
-  border-top: none;
-} 
-.ticket {
-  border: black 1px solid;
-}  */
+/* rounded-circle > profile photo in header */
 .rounded-circle {
   height: 30px;
 }
-/* id_rating correspond aux bouton radio */
+/* id_rating > button radio */
 #id_rating {
   display: flex;
   justify-content: space-around;

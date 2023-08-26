@@ -1,7 +1,7 @@
 {% load custom_filters %}
 
 {% if review.user %}
-  <div class="comment">
+  <div class="p-2 pt-3 my-2 shadow border border-secondary rounded bg-light">
     <p>
       {% if review.user == user %}
         Vous avez
@@ -14,7 +14,7 @@
       {% else %}
         à {{review.time_created|date:"H\hi"}},
         le {{review.time_created|date}}
-      {% endif %}    
+      {% endif %}     
   </p>
 
   {% if review.time_edited %}
