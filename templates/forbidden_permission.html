@@ -1,7 +1,12 @@
 {% extends 'base.html' %} 
 
 {% block content %}
+  {% load static %}
 
-  <h1>Non autorisé !</h1>
+  <h1 class="text-center my-3">Non autorisé !</h1>
+
+  <p class="text-center my-5">
+    <img src="{% static 'img/acces-interdit.jpg' %}" alt="permission interdite" class="w-50">
+  </p>
 
 {% endblock %}
