@@ -1,67 +1,69 @@
 {% extends 'base.html' %} 
 
 {% block content %}
+	{% load django_bootstrap5 %}
 
-    {% include 'review/partials/flash_message.html' %}
+	<h1 class="text-center my-3">Abonnements</h1>
 
-    <div>
-        <h1>Suivre un utilisateur</h1>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }} 
-            <button type="submit">Suivre</button>
-        </form>
-    </div>
-    <div>
-        <h1>Abonnements</h1>
-        {% for followed_user in followed_users %}
+	{% include 'review/partials/flash_message.html' %}
 
-            <p>
-                {{followed_user.user_2.username|capfirst}} 
-                <button>
-                    <a href="{% url 'relation_delete' followed_user.id %}">Ne plus suivre</a>
-                </button>
-            </p>
-            
-        {% empty %}
-	
-		<p>Aucun Abonnement.</p>
-		
-	    {% endfor %}
-    </div>
-    <div>
-        <h1>Abonnés</h1>
-        {% for follower in followers %}
+	<div class="col-12 offset-lg-3 col-lg-6">
 
-            <p>
-                {{follower.user_1.username|capfirst}}
-                <button>
-                    <a href="{% url 'relation_block' follower.id %}">Bloquer</a>
-                </button>
-            </p>
-            
-        {% empty %}
+		<div class="row py-4 mb-4">
+			<h3 class="text-center my-3">Suivre un utilisateur</h3>
+			<form method="post" class="pt-4">
+					{% csrf_token %}
+					{% bootstrap_form form %} 
+					<button type="submit" class="btn btn-dark w-100">
+						Suivre <i class="bi bi-person-plus-fill"></i>
+					</button>
+			</form>
+		</div>
 
-        <p>Aucun Abonné.</p>
-        
-        {% endfor %}
-    </div>
-    <div>
-        <h1>Utilisateurs bloqués</h1>
-        {% for blocked in blocked_users %}
+		<div class="row py-4 mb-4 border-top">
+			<h3 class="text-center my-3">Utilisateurs suivis</h3>
+			{% for followed_user in followed_users %}
+				<p class="pt-5">
+					<a href="{% url 'relation_delete' followed_user.id %}" 
+					role="button" class="btn btn-dark" title="Ne plus suivre">
+						<i class="bi bi-person-x-fill"></i>
+					</a>
+					{{followed_user.user_2.username|capfirst}} 
+				</p>
+			{% empty %}
+				<p class="pt-5">Aucun utilisateur suivi.</p>
+			{% endfor %}
+		</div>
 
-            <p>
-                {{blocked.user_2.username|capfirst}}
-                <button>
-                    <a href="{% url 'relation_delete' blocked.id %}">Débloquer</a>
-                </button>
-            </p>
-            
-        {% empty %}
+		<div class="row py-4 mb-4 border-top">
+			<h3 class="text-center my-3">Utilisateurs qui vous suivent</h3>
+			{% for follower in followers %}
+				<p class="pt-5">
+					<a href="{% url 'relation_block' follower.id %}" 
+					role="button" class="btn btn-dark" title="Bloquer">
+						<i class="fa fa-ban"></i>
+					</a>
+					{{follower.user_1.username|capfirst}}
+				</p>
+			{% empty %}
+				<p class="pt-5">Aucun utilisateur ne vous suit.</p>
+			{% endfor %}
+		</div>
 
-        <p>Aucun utilisateur bloqué.</p>
-        
-        {% endfor %}
-    </div>
+		<div class="row py-4 mb-4 border-top">
+			<h3 class="text-center my-3">Utilisateurs bloqués</h3>
+			{% for blocked in blocked_users %}
+				<p class="pt-5">
+					<a href="{% url 'relation_delete' blocked.id %}" 
+					role="button" class="btn btn-dark" title="Débloquer">
+						<i class="bi bi-unlock-fill"></i>
+					</a>
+					{{blocked.user_2.username|capfirst}}
+				</p>		
+			{% empty %}
+				<p class="pt-5">Aucun utilisateur bloqué.</p>
+			{% endfor %}
+		</div>
 
+	</div>
 {% endblock content %}

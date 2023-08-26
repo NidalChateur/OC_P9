@@ -1,111 +1,122 @@
 {% load static %}
+
 <nav class="bg-light navbar-light navbar navbar-expand-lg fixed-top">
-    <div class="container 
-    {% if not user.is_authenticated %}
-        d-flex justify-content-center
-    {% endif %}">
+  <div class="container 
+  {% if not user.is_authenticated %}
+      d-flex justify-content-center
+  {% endif %}">
 
-      <!-- brand -->
-      <a href="{% url 'home' %}" class="navbar-brand text-uppercase fw-bold">
-        <img src="{% static 'img/logo.png' %}" alt="" >
-        <span class="bg-dark text-light p-1 bg-gradient rounded-3">
-          LITReview 
-        </span>
-      </a>
-      {% if user.is_authenticated %}
-        <span>
-            <a href="{% url 'profile' %}" role="button" class="btn btn-light">
-                {% if user.image %}
-                    <img src="{{user.image.url}}" alt="photo de profile" class="rounded-circle">
-                {% else %}
-                    <img src="{% static 'img/default_profile.png' %}" alt="photo de profile" class="rounded-circle">
-                {% endif %}
-                {{user}}
+    <!-- brand -->
+    <a href="{% url 'home' %}" class="navbar-brand text-uppercase fw-bold">
+      <img src="{% static 'img/logo.png' %}" alt="logo LITReview" >
+      <span class="bg-dark text-light p-1 bg-gradient rounded-3">
+        LITReview 
+      </span>
+    </a>
+
+    {% if user.is_authenticated %}
+      <!-- photo + user.username -->
+      <span>
+          <a href="{% url 'profile' %}" role="button" class="btn btn-light">
+              {% if user.image %}
+                  <img src="{{user.image.url}}" alt="photo de profile" class="rounded-circle">
+              {% else %}
+                  <img src="{% static 'img/default_profile.png' %}" alt="photo de profile" class="rounded-circle">
+              {% endif %}
+              {{user}}
+          </a>
+      </span>
+
+      <!-- toggle button : hidden on wide screen -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- class div.collapse should be equal to button.  
+      navigation menu-->
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+
+          <li class="nav-item active">
+              <a class="nav-link
+              {% if request.path == '/home/' %} 
+                active
+                border-bottom border-dark border-2
+              {% endif %}" 
+              href="{% url 'home' %}">
+                <i class="bi bi-house d-none d-xl-inline"></i>Flux
+              </a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link
+            {% if request.path == '/ranking/' %} 
+              active
+              border-bottom border-dark border-2
+            {% endif %}" 
+            href="{% url 'ranking' %}">
+              <i class="bi bi-graph-down d-none d-xl-inline"></i>Classement
             </a>
-        </span>
-        <!-- toggle button : hidden on wide screen -->
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-          >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <!-- class div.collapse should be equal to button.  -->
-        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-          <ul class="navbar-nav">
-            <li class="nav-item active">
-              
-                <a class="nav-link
-                {% if request.path == '/home/' %} 
-                  active
-                  border-bottom border-dark border-2
-                {% endif %}" 
-                href="{% url 'home' %}">
-                  <i class="bi bi-house d-none d-xl-inline"></i>Flux</a>
-            </li>
+          </li>
 
-            <li class="nav-item">
-              <a class="nav-link
-              {% if request.path == '/ranking/' %} 
-                active
-                border-bottom border-dark border-2
-              {% endif %}" 
-              href="{% url 'ranking' %}"><i class="bi bi-graph-down d-none d-xl-inline"></i>Classement</a>
-            </li>
+          <li class="nav-item">
+            <a class="nav-link
+            {% if request.path == '/posts/' %} 
+              active
+              border-bottom border-dark border-2
+            {% endif %}" 
+              href="{% url 'posts' %}"><i class="bi bi-files d-none d-xl-inline"></i>Posts</a>
+          </li>
 
-            <li class="nav-item">
-              <a class="nav-link
-              {% if request.path == '/posts/' %} 
-                active
-                border-bottom border-dark border-2
-              {% endif %}" 
-               href="{% url 'posts' %}"><i class="bi bi-files d-none d-xl-inline"></i>Posts</a>
-            </li>
+          <li class="nav-item">
+            <a class="nav-link
+            {% if request.path == '/search/' %} 
+              active
+              border-bottom border-dark border-2
+            {% endif %}" 
+            href="{% url 'search' %}">
+              <i class="bi bi-search d-none d-xl-inline"></i>Rechercher
+            </a>
+          </li>
 
-            <li class="nav-item">
-              <a class="nav-link
-              {% if request.path == '/search/' %} 
-                active
-                border-bottom border-dark border-2
-              {% endif %}" 
-              href="{% url 'search' %}"><i class="bi bi-search d-none d-xl-inline"></i>Rechercher</a>
-            </li>
+          <li class="nav-item">
+            <a class="nav-link
+            {% if request.path == '/relations/' %} 
+              active
+              border-bottom border-dark border-2
+            {% endif %}" 
+            href="{% url 'relation' %}">
+              <i class="bi bi-people d-none d-xl-inline"></i>Abonnements
+            </a>
+          </li>
 
-            <li class="nav-item">
-              <a class="nav-link
-              {% if request.path == '/relations/' %} 
-                active
-                border-bottom border-dark border-2
-              {% endif %}" 
-              href="{% url 'relation' %}"><i class="bi bi-people d-none d-xl-inline"></i>Abonnements</a>
-            </li>
+          <li class="nav-item">
+            <a class="nav-link
+            {% if request.path == '/profile/' %} 
+              active
+              border-bottom border-dark border-2
+            {% endif %}" 
+            href="{% url 'profile' %}">
+              <i class="bi bi-person d-none d-xl-inline"></i>Mon profil
+            </a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'logout' %}">
+              <i class="bi bi-power d-none d-xl-inline"></i>Déconnexion
+            </a>
+          </li>
 
-            <li class="nav-item">
-              <a class="nav-link
-              {% if request.path == '/profile/' %} 
-                active
-                border-bottom border-dark border-2
-              {% endif %}" 
-              href="{% url 'profile' %}">
-              <i class="bi bi-person d-none d-xl-inline"></i>Mon profil</a>
-            </li>
-            
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'logout' %}"><i class="bi bi-power d-none d-xl-inline">
-              </i>Déconnexion
-                </a>
-            </li>
-
-          </ul>
-        </div>
-        
-      {% endif %}
-
-    </div>
-
-  </nav>
+        </ul>
+      </div>
+    {% endif %}
+  </div>
+</nav>

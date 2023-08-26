@@ -2,19 +2,19 @@
 {% block content %} 
   {% load static %}
 
-  <h1 class="text-center my-3">Mon profil</h1>
+  <h1 class="text-center m-3">Mon profil</h1>
 
   <div class="col-12 offset-lg-3 col-lg-6">
     {% if user.image %}
     <p>
-      <img src="{{user.image.url}}" alt="photo de profile" class="profile_photo rounded border border-dark" />
+      <img src="{{user.image.url}}" alt="photo de profile" class="rounded border border-dark" />
     </p>
     {% else %}
       <p>
         <img
           src="{% static 'img/default_profile.png' %}"
           alt="photo de profile"
-          class="profile_photo rounded border border-dark"
+          class="rounded border border-dark"
         />
       </p>
     {% endif %}
@@ -26,13 +26,16 @@
         (non renseigné)
       {% endif%}
     </p>
+
     <p>Nom de famille :
       {% if user.last_name %}
         {{user.first_name|capfirst}}
       {% else %}
         (non renseigné)
       {% endif%} 
-      {{user.last_name|capfirst}}</p>
+      {{user.last_name|capfirst}}
+    </p>
+
     <p>Adresse électronique : 
       {% if user.email %}
         {{user.email}}
