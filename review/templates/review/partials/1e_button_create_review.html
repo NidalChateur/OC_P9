@@ -1,0 +1,37 @@
+<!-- créer une review -->
+{% if review.ticket.user != user and not review.user %}
+  {% if p %}
+    <p class="pt-3 text-center">
+  {% endif %}  
+
+  <a
+    href="{% url 'review_create' review.id %}"
+    role="button"
+    class="btn btn-dark w-50"
+  >
+    Créer une critique <i class="bi bi-plus-circle"></i>
+  </a>
+  {% if p %}
+    </p>
+  {% endif %} 
+{% endif %}
+
+<!-- créer une self_review -->
+{% if review.ticket.user == user and not review.self_review %}
+  {% if p %}
+    <p class="pt-3 text-center">
+  {% endif %} 
+
+  <a
+    href="{% url 'self_review_create' review.id %}"
+    role="button"
+    class="btn btn-dark w-lg-25"
+  >
+    Créer une critique <i class="bi bi-plus-circle"></i>
+  </a>
+
+  {% if p %}
+    </p>
+  {% endif %} 
+{% endif %}
+ 

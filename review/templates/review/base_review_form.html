@@ -1,0 +1,32 @@
+{% extends "base.html" %} 
+
+{% block content %}
+	{% load django_bootstrap5 %}
+
+	{% block title %}
+		<!-- <h2>Créer votre critique</h2> -->
+		<!-- <h2>Modifier votre critique</h2> -->
+	{% endblock title %}
+
+	<div class="col-12 offset-lg-2 col-lg-8">
+		<div class="w-100 p-4 border border-light shadow-lg rounded ">
+
+			<h3>Vous êtes en train de poster en réponse à :</h3>
+
+			{% include "review/partials/1c_read_ticket.html" %}
+
+			<form method="post" class="pt-4">
+				<h3>Critique</h3>
+
+				{% csrf_token %}
+				{% bootstrap_form form %}
+
+				{% block button %}
+					<!-- <button type="submit">Enregistrer</button> -->
+					<!-- <button type="submit">Publier</button> -->
+				{% endblock button %}
+			</form>
+
+		</div>
+	</div>
+{% endblock content %}

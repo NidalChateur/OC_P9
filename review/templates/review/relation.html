@@ -1,0 +1,69 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+	{% load django_bootstrap5 %}
+
+	<h1 class="text-center my-3">Abonnements</h1>
+
+	{% include 'review/partials/flash_message.html' %}
+
+	<div class="col-12 offset-lg-3 col-lg-6">
+
+		<div class="row py-4 mb-4">
+			<h3 class="text-center my-3">Suivre un utilisateur</h3>
+			<form method="post" class="pt-4">
+					{% csrf_token %}
+					{% bootstrap_form form %} 
+					<button type="submit" class="btn btn-dark w-100">
+						Suivre <i class="bi bi-person-plus-fill"></i>
+					</button>
+			</form>
+		</div>
+
+		<div class="row py-4 mb-4 border-top">
+			<h3 class="text-center my-3">Utilisateurs suivis</h3>
+			{% for followed_user in followed_users %}
+				<p class="pt-5">
+					<a href="{% url 'relation_delete' followed_user.id %}" 
+					role="button" class="btn btn-dark" title="Ne plus suivre">
+						<i class="bi bi-person-x-fill"></i>
+					</a>
+					{{followed_user.user_2.username|capfirst}} 
+				</p>
+			{% empty %}
+				<p class="pt-5">Aucun utilisateur suivi.</p>
+			{% endfor %}
+		</div>
+
+		<div class="row py-4 mb-4 border-top">
+			<h3 class="text-center my-3">Utilisateurs qui vous suivent</h3>
+			{% for follower in followers %}
+				<p class="pt-5">
+					<a href="{% url 'relation_block' follower.id %}" 
+					role="button" class="btn btn-dark" title="Bloquer">
+						<i class="fa fa-ban"></i>
+					</a>
+					{{follower.user_1.username|capfirst}}
+				</p>
+			{% empty %}
+				<p class="pt-5">Aucun utilisateur ne vous suit.</p>
+			{% endfor %}
+		</div>
+
+		<div class="row py-4 mb-4 border-top">
+			<h3 class="text-center my-3">Utilisateurs bloqués</h3>
+			{% for blocked in blocked_users %}
+				<p class="pt-5">
+					<a href="{% url 'relation_delete' blocked.id %}" 
+					role="button" class="btn btn-dark" title="Débloquer">
+						<i class="bi bi-unlock-fill"></i>
+					</a>
+					{{blocked.user_2.username|capfirst}}
+				</p>		
+			{% empty %}
+				<p class="pt-5">Aucun utilisateur bloqué.</p>
+			{% endfor %}
+		</div>
+
+	</div>
+{% endblock content %}

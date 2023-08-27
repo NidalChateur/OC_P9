@@ -12,8 +12,9 @@ def signup(request):
     """signup view"""
 
     form = forms.SignupForm()
+
     if request.method == "POST":
-        form = forms.SignupForm(request.POST)
+        form = forms.SignupForm(request.POST, request.FILES)
         if form.is_valid():
             # save the user in DB
             user = form.save()
@@ -24,13 +25,11 @@ def signup(request):
 
     return render(request, "authentication/signup.html", {"form": form})
 
-
 @login_required
 def profile(request):
     """profile view"""
 
     return render(request, "authentication/profile.html")
-
 
 @login_required
 def profile_update(request):
@@ -41,7 +40,7 @@ def profile_update(request):
         form = forms.ProfileForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            
+
             return redirect("profile")
 
     return render(request, "authentication/profile_update.html", {"form": form})

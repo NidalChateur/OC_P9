@@ -1,0 +1,33 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+  {% block title %}
+    <!-- <h1>Suppression de votre critique</h1> -->
+    <!-- <h1>Suppression de votre ticket</h1> -->
+  {% endblock title %}
+
+  <div class="mt-3 offset-1 col-10 offset-lg-3 col-lg-6 p-4 border border-light shadow-lg rounded">
+
+    <p>
+      Êtes-vous sûr de vouloir supprimer votre 
+
+      {% block product %}
+        <!-- critique sur <a href="{% url 'ticket_detail' review.ticket.id %}">{{ review.ticket.title }}</a>  -->
+        <!-- ticket <a href="{% url 'ticket_detail' ticket.id %}">{{ ticket.title }}</a> -->
+      {% endblock product %}
+      ?
+    </p>
+    
+    <p>Les données de votre post seront définitivement perdues.</p>
+
+    <form method="POST">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-dark w-100">
+        Supprimer <i class="fa fa-trash"></i>
+      </button>
+    </form>
+
+  </div>
+
+{% endblock %}

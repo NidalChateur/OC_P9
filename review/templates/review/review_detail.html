@@ -3,15 +3,17 @@
 {% block content %}
 
   {% if review.user == user or review.self_review.user == user %}
-    <h1>Votre critique</h1>
+    <h1 class="text-center my-3">Votre critique</h1>
   {% else %}
-    <h1>Critique</h1>
+    <h1 class="text-center my-3">Critique</h1>
   {% endif %}
 
-  {% include "create_menu.html" %}
+  {% include "review/partials/create_menu.html" %}
+
+  {% include 'review/partials/flash_message.html' %}
 
   {% if review %}
-    {% include "1_read.html" %}
+    {% include "review/partials/1_read.html" %}
   {% else %}
     <p>Aucune critique trouvée.</p>
   {% endif %}

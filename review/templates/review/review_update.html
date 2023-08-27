@@ -1,13 +1,13 @@
-{% extends "review/review_form.html" %} 
+{% extends "review/base_review_form.html" %} 
 
 {% block title %}
 
-  <h2>Modifier votre critique</h2>
+  <h1 class="text-center my-3">Modifier votre critique</h1>
 
 {% endblock title %}
 
 {% block button %}
 	
-	<button type="submit">Enregistrer</button>
+  {% include "review/partials/button_save.html" %}
 
 {% endblock button %}

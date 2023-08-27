@@ -1,28 +1,26 @@
 {% extends "base.html" %} 
 
 {% block content %}
+  {% load django_bootstrap5 %}
 
-  <h1>Créer une critique</h1>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
+  <h1 class="text-center m-3">Créer une critique</h1>
 
-    <div class="ticket">
-      <h3>Livre / Article</h3>
-      {% for field in ticket_form %}
-        <p><label for="{{ field.id_for_label }}">{{ field.label }}</label></p>
-        <p>{{ field }}</p>
-      {% endfor %}
-    </div>
+  <div class="col-12 offset-lg-2 col-lg-8">
+    <form method="post" enctype="multipart/form-data" 
+      class="w-100  border rounded border-light shadow-lg">
 
-    <div class="review_form">
-      <h3>Critique</h3>
-      {% for field in review_form %}
-        <p><label for="{{ field.id_for_label }}">{{ field.label }}</label></p>
-        <p>{{ field }}</p>
-      {% endfor %}
-      <button type="submit">Publier</button>
-    </div>
+      {% csrf_token %}
 
-  </form>
+      <div class="w-100 p-4">
+        <h3>Livre / Article</h3>
+        {% bootstrap_form ticket_form %}
+      </div>
 
+      <div class="w-100 p-4 border-top">
+        <h3>Critique</h3>
+        {% bootstrap_form review_form %}
+        {% include "review/partials/button_publish.html" %}
+      </div>
+    </form>
+  </div>
 {% endblock content %}

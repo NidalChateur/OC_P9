@@ -1,0 +1,87 @@
+{% load custom_filters %}
+
+<!-- if button == True :
+          the ticket is displayed with its button and without border
+          because the border is in 1_read.html
+      else :
+          the ticket is displayed inside the review without button 
+          and with its border -->
+
+{% if button %}
+  <div class="p-3 bg-light">
+{% else %}
+  <div class="p-3 border border-secondary rounded bg-light">
+{% endif %}
+
+  <p>
+    {% if review.ticket.user == user %}
+      Vous avez
+    {% else %}
+      {{review.ticket.user|capfirst}} a 
+    {% endif %}  
+    demandé une critique
+    {% if review.ticket.time_created|is_recent %}
+      {{review.ticket.time_created|get_posted_at_display}}
+    {% else %}
+      à {{review.ticket.time_created|date:"H\hi"}},
+      le {{review.ticket.time_created|date}}
+    {% endif %}    
+  </p>
+
+  {% if review.ticket.time_edited %}
+    <p>
+      Modifié 
+      {% if review.ticket.time_edited|is_recent %}
+        {{review.ticket.time_edited|get_posted_at_display}}
+      {% else %}
+        à {{review.ticket.time_edited|date:"H\hi"}},
+        le {{review.ticket.time_edited|date}}
+      {% endif %}  
+    </p>
+  {% endif %}
+
+  <p>
+    {% if review.ticket.product_type %}
+      {{review.ticket.product_type|capfirst}} : 
+    {% endif %}
+
+    {{review.ticket.title|capfirst}}{% if review.ticket.author %}, 
+      écrit par {{review.ticket.author|capfirst}}
+    {% endif %}
+
+    {% if review.ticket.release_date %}
+       [{{review.ticket.release_date}}]
+    {% endif %}
+  </p>
+
+  {% if review.ticket.description %}
+    <p>{{review.ticket.description|capfirst}}</p>
+  {% endif %} 
+  
+  {% if review.ticket.image %}
+    <p class="text-center">
+      <img
+        src="{{review.ticket.image.url}}"
+        alt="image de {{review.ticket.title|capfirst}}"
+        class="shadow border border-3 border-secondary rounded-3"
+      />
+    </p>
+  {% endif %} 
+  
+  {% if button %} 
+    <p class="text-center align-items-center">
+      
+      {% include "review/partials/1e_button_create_review.html" %}
+
+      {% if review.ticket.user == user %}
+        <a href="{% url 'ticket_update' review.ticket.id %}" role="button" class="btn btn-dark w-lg-25 my-1">
+          Modifier le ticket <i class="bi bi-pencil-fill"></i>
+        </a>
+        <a href="{% url 'ticket_delete' review.ticket.id %}" role="button" class="btn btn-dark w-lg-25">
+          Supprimer le ticket <i class="fa fa-trash"></i>
+        </a>
+      {% endif %} 
+
+    </p>
+	{% endif %}
+</div>

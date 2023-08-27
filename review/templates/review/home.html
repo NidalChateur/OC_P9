@@ -1,7 +1,17 @@
-{% extends 'review/base_home_posts.html' %} 
+{% extends 'review/base_home_posts_ranking.html' %} 
+
+{% block title %}
+
+    {% if request.path == '/home/' %} 
+	    <h1 class="text-center my-3">Flux</h1>
+    {% else %}
+        <h1 class="text-center my-3">Résultat de recherche</h1>
+    {% endif %}
+	
+{% endblock title %}
 
 {% block read %}
 
-    {% include "1_read.html" %}
+    {% include "review/partials/1_read.html" with review=instance %}
 
 {% endblock read %}

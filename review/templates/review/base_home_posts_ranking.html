@@ -1,0 +1,27 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+	{% block title %}
+		<!-- <h1>Vos posts</h1> -->
+		<!-- <h1">Flux</h1> -->
+		<!-- <h1">Classement</h1> -->
+	{% endblock title %}
+
+	{% include "review/partials/create_menu.html" %}
+
+	{% include 'review/partials/flash_message.html' %}
+
+	{% for instance in page_obj %}
+		{% block read %}
+			<!-- {% include "1_read.html" with posts="True" %} -->
+			<!-- {% include "1_read.html" %} -->
+		{% endblock read %}
+	{% empty %}
+		<p>Aucun post publié.</p>
+	{% endfor %}
+{% endblock content %}
+	
+{% block pagination %}
+	{% include 'review/partials/paginator.html' %}
+{% endblock pagination %}

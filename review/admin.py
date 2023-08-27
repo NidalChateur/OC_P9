@@ -1,12 +1,15 @@
 from django.contrib import admin
 
-from review.models import Ticket, Review, Follower
+from review.models import Ticket, Review, Relation
 
 
 class TicketAdmin(admin.ModelAdmin):
     list_display = (
-        "title",
         "user",
+        "title",
+        "author",
+        "product_type",
+        "release_date",
         "time_created",
         "time_edited",
         "id",
@@ -20,23 +23,20 @@ class ReviewAdmin(admin.ModelAdmin):
     list_display = (
         "user",
         "ticket",
+        "overall_rating",
         "time_last_entry",
         "time_created",
         "time_edited",
         "id",
-        "self_review_instance",
+        "is_self_review",
     )
 
 
 admin.site.register(Review, ReviewAdmin)
 
 
-class FollowerAdmin(admin.ModelAdmin):
-    list_display = (
-        "user",
-        "followed_user",
-        "description",
-    )
+class RelationAdmin(admin.ModelAdmin):
+    list_display = ("user_1", "type", "user_2", "description", "id")
 
 
-admin.site.register(Follower, FollowerAdmin)
+admin.site.register(Relation, RelationAdmin)

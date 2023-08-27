@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import sys
 
 from decouple import config
 
@@ -42,7 +43,9 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "authentication",
     "review",
+    "django_bootstrap5",
 ]
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -111,7 +114,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "fr-fr"
 
-TIME_ZONE = 'Europe/Paris'
+TIME_ZONE = "Europe/Paris"
 # TIME_ZONE = 'UTC'
 
 USE_I18N = True
@@ -147,9 +150,7 @@ LOGOUT_REDIRECT_URL = LOGIN_URL
 
 # Configuration pour l'envoi d'e-mails dans la console (pour le développement et le test)
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-# litreview.django@gmail.com
-# Django*****
-# litreview@litreview-394100.iam.gserviceaccount.com
+
 
 # uploaded images url
 MEDIA_URL = "/media/"
