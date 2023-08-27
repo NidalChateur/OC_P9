@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="icon.jpg" alt="Image Description">
+</p>
+
+
 # LITReview : A Django application using the Bootstrap framework v5.1.
 
 
