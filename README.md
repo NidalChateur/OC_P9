@@ -19,7 +19,7 @@ This locally executable Django application can be installed by following the ste
 
 ### Installation and Execution of the Application using venv and pip
 
-1. Clone this repository using `$ git clone clone https://github.com/NidalChateur/OC_P9_LITReview.git` (you can also download the code using [as a zip file](https://github.com/NidalChateur/OC_P9_LITReview/archive/refs/heads/main.zip))
+1. Clone this repository using `$ git clone https://github.com/NidalChateur/OC_P9_LITReview.git` (you can also download the code using [as a zip file](https://github.com/NidalChateur/OC_P9_LITReview/archive/refs/heads/main.zip))
 2. Move to the OC_P9_LITReview root folder with `$ cd OC_P9_LITReview`
 3. Create a virtual environment for the project with `$ python -m venv env` on windows or `$ python3 -m venv env` on macos or linux.
 4. Activate the virtual environment with `$ env\Scripts\activate` on windows or `$ source env/bin/activate` on macos or linux.
@@ -45,7 +45,7 @@ Cette application Django exécutable localement peut être installée en suivant
 
 ### Installation et exécution de l'application avec venv et pip
 
-1. Cloner ce dépôt de code à l'aide de la commande `$ git clone clone https://github.com/NidalChateur/OC_P9_LITReview.git` (vous pouvez également télécharger le code [en temps qu'archive zip](https://github.com/NidalChateur/OC_P9_LITReview/archive/refs/heads/main.zip))
+1. Cloner ce dépôt de code à l'aide de la commande `$ git clone https://github.com/NidalChateur/OC_P9_LITReview.git` (vous pouvez également télécharger le code [en temps qu'archive zip](https://github.com/NidalChateur/OC_P9_LITReview/archive/refs/heads/main.zip))
 2. Rendez-vous depuis un terminal à la racine du répertoire OC_P9_LITReview avec la commande `$ cd OC_P9_LITReview`
 3. Créer un environnement virtuel pour le projet avec `$ python -m venv env` sous windows ou `$ python3 -m venv env` sous macos ou linux.
 4. Activez l'environnement virtuel avec `$ env\Scripts\activate` sous windows ou `$ source env/bin/activate` sous macos ou linux.
