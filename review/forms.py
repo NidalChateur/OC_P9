@@ -1,4 +1,3 @@
-from logging import PlaceHolder
 from django import forms
 
 from review.models import Ticket, Review
@@ -54,7 +53,6 @@ class TicketSearchByTitleForm(forms.Form):
     title = forms.CharField(
         max_length=128,
         label="Titre",
-        
     )
 
 

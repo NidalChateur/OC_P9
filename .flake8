@@ -1,5 +1,5 @@
 [flake8]
-exclude = env, .git, .vscode, __pycache__, .idea
+exclude = env, env2, .git, .vscode, __pycache__, .idea, migrations, templates, media, static
 max-line-length = 119
 
 # output

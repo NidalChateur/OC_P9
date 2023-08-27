@@ -25,11 +25,13 @@ def signup(request):
 
     return render(request, "authentication/signup.html", {"form": form})
 
+
 @login_required
 def profile(request):
     """profile view"""
 
     return render(request, "authentication/profile.html")
+
 
 @login_required
 def profile_update(request):

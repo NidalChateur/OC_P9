@@ -1,6 +1,6 @@
 from django.urls import path
 
-# generics views provided by Django 
+# generics views provided by Django
 from django.contrib.auth.views import (
     LoginView,
     LogoutView,
