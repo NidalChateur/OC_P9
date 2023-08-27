@@ -16,7 +16,7 @@ This locally executable Django application can be installed by following the ste
 
 1. Clone this repository using `$ git clone clone https://github.com/NidalChateur/OC_P9_LITReview.git` (you can also download the code using [as a zip file](https://github.com/NidalChateur/OC_P9_LITReview/archive/refs/heads/main.zip))
 2. Move to the OC_P9_LITReview root folder with `$ cd OC_P9_LITReview`
-3. Create a virtual environment for the project with `$ py -m venv env` on windows or `$ python3 -m venv env` on macos or linux.
+3. Create a virtual environment for the project with `$ python -m venv env` on windows or `$ python3 -m venv env` on macos or linux.
 4. Activate the virtual environment with `$ env\Scripts\activate` on windows or `$ source env/bin/activate` on macos or linux.
 5. Install project dependencies with `$ pip install -r requirements.txt`
 6. Run the server with `$ python manage.py runserver`
