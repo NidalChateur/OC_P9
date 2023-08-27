@@ -21,9 +21,9 @@ This locally executable Django application can be installed by following the ste
 5. Install project dependencies with `$ pip install -r requirements.txt`
 6. Run the server with `$ python manage.py runserver`
 
-When the server is running after step 6 of the procedure, the OCMovies API can be requested from endpoints starting with the following base URL: http://localhost:8000/api/v1/titles/.
+When the server is running, after step 6 of the procedure, the application can be accessed from the URL : http://localhost:8000/api/v1/titles/.
 
-Steps 1-3 and 5-6 are only required for initial installation. For subsequent launches of the API, you only have to execute steps 4 and 7 from the root folder of the project.
+Steps 1 to 6 are only required for the initial installation. For subsequent launches of the application server, simply execute steps 4 and 6 from the project's root directory.
 
 
 # LITReview : une application Django utilisant le framework Bootstrap v5.1
