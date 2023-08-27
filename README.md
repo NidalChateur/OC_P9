@@ -1,17 +1,18 @@
-# LITReview : a Django application
+# LITReview : A Django application using the Bootstrap framework v5.1.
 
-The OCMovies-API project is a REST API application to be executed locally in the context
-of educational projects. It provides movie information from GET http endpoints.
-The API provides these endpoints to get detailed infomation about movies filtered by
-various criteria such as genre, IMDB score or year. Endpoints allow users to retrieve
-information for individual movies or lists of movies.
+
+Our new application allows users to request or publish reviews of books or articles. The application features three main use cases:
+
+1. Publishing reviews of books or articles.
+2. Requesting reviews on a specific book or article.
+3. Searching for interesting articles and books to read, based on others' reviews.
 
 ## Installation
 
-This locally-executable API can be installed and executed from [http://localhost:8000/api/v1/titles/](http://localhost:8000/api/v1/titles/) using the following steps.
+This locally executable Django application can be installed by following the steps outlined below.
 
 
-### Option 2: Installation and execution without pipenv (using venv and pip)
+### Installation and Execution of the Application using venv and pip
 
 1. Clone this repository using `$ git clone clone https://github.com/OpenClassrooms-Student-Center/OCMovies-API-EN-FR.git` (you can also download the code using [as a zip file](https://github.com/OpenClassrooms-Student-Center/OCMovies-API-EN-FR/archive/refs/heads/master.zip))
 2. Move to the ocmovies-api root folder with `$ cd ocmovies-api-en`
@@ -36,7 +37,7 @@ Notre nouvelle application permet de demander ou publier des critiques de livres
 
 ## Installation
 
-Cette application Django exécutable localement peut être installée en suivant les étapes décrites ci-dessous. 
+Cette application Django exécutable localement peut être installée en suivant les étapes décrites ci-dessous. Si vous n'avez pas encore installé Python sur votre PC, vous pouvez le télécharger via ce lien : https://www.python.org/downloads/ puis l'installer.
 
 ### Installation et exécution de l'application avec venv et pip
 
