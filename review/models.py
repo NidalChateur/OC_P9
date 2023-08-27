@@ -114,6 +114,24 @@ class Review(models.Model):
         null=True,
     )
 
+    def update_overall_rating(self):
+        """used for ranking page :
+        self.overall_rating = self.rating + self.self_review.rating"""
+
+        self.overall_rating = 0
+        if self.rating and self.self_review:
+            self.overall_rating = self.rating + self.self_review.rating
+        elif self.rating:
+            self.overall_rating = self.rating
+        elif self.self_review:
+            self.overall_rating = self.self_review.rating
+
+    def delete_self_review_rating(self, *args, **kwargs):
+        """when the self_review is deleted, it updates self.overall_rating"""
+
+        self.overall_rating = self.rating
+        super().save(*args, **kwargs)
+
     def set_null(self, *args, **kwargs):
         """erase the tierce review"""
 
@@ -124,6 +142,7 @@ class Review(models.Model):
         self.body = None
         self.time_created = None
         self.time_edited = None
+        self.update_overall_rating()
         super().save(*args, **kwargs)
 
     def save(self, *args, **kwargs):
@@ -144,14 +163,7 @@ class Review(models.Model):
         if self.user == self.ticket.user:
             self.is_self_review = True
 
-        # overall_rating
-        if self.rating and self.self_review:
-            self.overall_rating = self.rating + self.self_review.rating
-        elif self.rating:
-            self.overall_rating = self.rating
-        elif self.self_review:
-            self.overall_rating = self.self_review.rating
-
+        self.update_overall_rating()
         super().save(*args, **kwargs)
 
 

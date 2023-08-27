@@ -12,17 +12,13 @@
 			{% endif %}
 
 			<!-- previous -->
-			<li 
-				{% if page_obj.has_previous %}
-					class="page-item">
+			{% if page_obj.has_previous %}
+				<li class="page-item">
 					<a class="page-link text-dark" href="?page={{ page_obj.previous_page_number }}">
-				{% else %}
-					class="page-item disabled">
-					<a class="page-link fw-light">
-				{% endif %}
 						Précédente
 					</a>
-			</li>
+				</li>
+			{% endif %}
 
 			<!-- current page - 1  -->
 			{% if page_obj.has_previous %}
@@ -50,17 +46,13 @@
 			{% endif %}
 
 			<!-- next -->
-			<li 
-				{% if page_obj.has_next %}
-					class="page-item">
+			{% if page_obj.has_next %}
+				<li class="page-item">
 					<a class="page-link text-dark" href="?page={{ page_obj.next_page_number }}">
-				{% else %}
-					class="page-item disabled">
-					<a class="page-link fw-light">
-				{% endif %}
 						Suivante
 					</a>
-			</li>
+				</li>
+			{% endif %}
 
 			<!-- last -->
 			{% if page_obj.has_next %}

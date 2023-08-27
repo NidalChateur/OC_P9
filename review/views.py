@@ -281,6 +281,7 @@ def self_review_delete(request, review_id):
         return redirect("forbidden_permission")
 
     if request.method == "POST":
+        review.delete_self_review_rating()
         review.self_review.delete()
 
         if review.headline:
@@ -309,6 +310,7 @@ def self_review_update(request, review_id):
         form = ReviewForm(request.POST, instance=review.self_review)
         if form.is_valid():
             form.save()
+            # to update review.time_last_entry
             review.save()
 
             messages.success(request, " ✅ Critique modifiée avec succès !")

@@ -20,9 +20,8 @@
 	{% empty %}
 		<p>Aucun post publié.</p>
 	{% endfor %}
-	
-	{% include 'review/partials/paginator.html' %}
 {% endblock content %}
 	
-{% block footer %}
-{% endblock footer %}
+{% block pagination %}
+	{% include 'review/partials/paginator.html' %}
+{% endblock pagination %}
