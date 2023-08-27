@@ -1,3 +1,4 @@
+<!-- edit tierce review -->
 {% if review.user == user %}
 	<p class="pt-3 text-center">
 
@@ -12,15 +13,16 @@
 	</p>
 {% endif %}
 
+<!-- edit self review -->
 {% if review.self_review.user == user %}
 	<p class="pt-3 text-center">
 
 		<a href="{% url 'self_review_update' review.id %}" role="button" class="btn btn-dark mb-1 mb-lg-0">
-			Modifier la critique
+			Modifier la critique <i class="bi bi-pencil-fill"></i>
 		</a>
 
 		<a href="{% url 'self_review_delete' review.id %}" role="button" class="btn btn-dark">
-			Supprimer la critique
+			Supprimer la critique <i class="fa fa-trash"></i>
 		</a>
 
   </p>

@@ -2,12 +2,15 @@
 
 {% block title %}
 
-  <h1>Suppression de votre ticket</h1>
+  <h1 class="text-center my-3">Suppression de votre ticket</h1>
 
 {% endblock title %}
 
 {% block product %}
 
-  ticket <a href="{% url 'ticket_detail' ticket.id %}">{{ ticket.title }}</a> 
+  ticket 
+  <a href="{% url 'ticket_detail' ticket.id %}" class="text-dark">
+    {{ ticket.title|capfirst }}
+  </a> 
 
 {% endblock product %}
