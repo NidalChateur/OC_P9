@@ -26,7 +26,7 @@ This locally executable Django application can be installed by following the ste
 5. Install project dependencies with `$ pip install -r requirements.txt`
 6. Run the server with `$ python manage.py runserver`
 
-When the server is running, after step 6 of the procedure, the application can be accessed from the URL : http://localhost:8000/api/v1/titles/.
+When the server is running, after step 6 of the procedure, the application can be accessed from the URL : [http://127.0.0.1:8000/].
 
 Steps 1 to 6 are only required for the initial installation. For subsequent launches of the application server, simply execute steps 4 and 6 from the project's root directory.
 
