@@ -50,10 +50,7 @@ class RelationForm(forms.Form):
 
 
 class TicketSearchByTitleForm(forms.Form):
-    title = forms.CharField(
-        max_length=128,
-        label="Titre",
-    )
+    title = forms.CharField(max_length=128, label="Titre")
 
 
 class TicketSearchByAuthorForm(forms.Form):
@@ -61,7 +58,4 @@ class TicketSearchByAuthorForm(forms.Form):
 
 
 class TicketSearchByYear(forms.Form):
-    year = forms.CharField(
-        max_length=128,
-        label="Année",
-    )
+    year = forms.CharField(max_length=128, label="Année")

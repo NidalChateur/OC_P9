@@ -490,7 +490,7 @@ def relation(request):
 
 @login_required
 def relation_delete(request, relation_id):
-    """delete a relation"""
+    """delete a relation 'follows' or 'blocks'"""
 
     relation = get_object_or_404(Relation, id=relation_id)
 

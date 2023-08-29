@@ -89,6 +89,15 @@ class Review(models.Model):
     """fields of the review.
     If the author of the ticket and the review are the same : it is a self_review !"""
 
+    ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE, null=True)
+    self_review = models.ForeignKey(to="self", on_delete=models.SET_NULL, null=True)
+    is_self_review = models.BooleanField(default=False)
+    overall_rating = models.IntegerField(
+        verbose_name="Note Total",
+        validators=[MinValueValidator(0), MaxValueValidator(10)],
+        null=True,
+    )
+
     rating = models.IntegerField(
         verbose_name="Note",
         validators=[MinValueValidator(0), MaxValueValidator(5)],
@@ -105,14 +114,6 @@ class Review(models.Model):
     time_created = models.DateTimeField(null=True)
     time_edited = models.DateTimeField(null=True, blank=True)
     time_last_entry = models.DateTimeField(auto_now_add=True, null=True)
-    ticket = models.ForeignKey(to=Ticket, on_delete=models.CASCADE, null=True)
-    is_self_review = models.BooleanField(default=False)
-    self_review = models.ForeignKey(to="self", on_delete=models.SET_NULL, null=True)
-    overall_rating = models.IntegerField(
-        verbose_name="Note Total",
-        validators=[MinValueValidator(0), MaxValueValidator(10)],
-        null=True,
-    )
 
     def update_overall_rating(self):
         """used for ranking page :
@@ -174,13 +175,6 @@ class Relation(models.Model):
     user_1 = models.ForeignKey(
         to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="follower"
     )
-    # user_2 can followed or blocked by user_1
-    user_2 = models.ForeignKey(
-        verbose_name="Nom d'utilisateur",
-        to=settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
-        related_name="followed",
-    )
     # type of the relation : 'follows' or 'blocks'
     type = models.CharField(
         max_length=128,
@@ -190,6 +184,14 @@ class Relation(models.Model):
             ("follows", "follows"),
         ),
     )
+    # user_2 can followed or blocked by user_1
+    user_2 = models.ForeignKey(
+        verbose_name="Nom d'utilisateur",
+        to=settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="followed",
+    )
+
     description = models.CharField(max_length=255, null=True)
 
     class Meta:
