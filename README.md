@@ -3,7 +3,7 @@
 </p>
 
 
-# LITReview : A Django application using the Bootstrap framework v5.1.
+# LITReview : A Django application using the Bootstrap framework
 
 
 Our new application allows users to request or publish reviews of books or articles. The application features three main use cases:
@@ -31,7 +31,7 @@ When the server is running, after step 6 of the procedure, the application can b
 Steps 1 to 6 are only required for the initial installation. For subsequent launches of the application server, simply execute steps 4 and 6 from the project's root directory.
 
 
-# LITReview : une application Django utilisant le framework Bootstrap v5.1
+# LITReview : une application Django utilisant le framework Bootstrap
 
 Notre nouvelle application permet de demander ou publier des critiques de livres ou d’articles. L’application présente trois cas d’utilisation principaux :
 
