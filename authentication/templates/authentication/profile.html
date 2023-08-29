@@ -6,9 +6,9 @@
 
   <div class="col-12 offset-lg-3 col-lg-6">
     {% if user.image %}
-    <p>
-      <img src="{{user.image.url}}" alt="photo de profile" class="rounded border border-dark" />
-    </p>
+      <p>
+        <img src="{{user.image.url}}" alt="photo de profile" class="rounded border border-dark" />
+      </p>
     {% else %}
       <p>
         <img
@@ -19,7 +19,8 @@
       </p>
     {% endif %}
   
-    <p>Prénom : 
+    <p>
+      Prénom : 
       {% if user.first_name %}
         {{user.first_name|capfirst}}
       {% else %}
@@ -27,7 +28,8 @@
       {% endif%}
     </p>
 
-    <p>Nom de famille :
+    <p>
+      Nom de famille :
       {% if user.last_name %}
         {{user.last_name|capfirst}}
       {% else %}
@@ -35,7 +37,8 @@
       {% endif%} 
     </p>
 
-    <p>Adresse électronique : 
+    <p>
+      Adresse électronique : 
       {% if user.email %}
         {{user.email}}
       {% else %}
@@ -48,11 +51,13 @@
         Modifier mon profil
       </a>
     </p>
+
     <p>
       <a href="{% url 'password_change' %}" role="button" class="btn btn-dark w-100">
         Changer de mot de passe
       </a>
     </p>
+    
   </div>
 
 

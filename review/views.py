@@ -19,6 +19,8 @@ from review.forms import (
 
 
 def paginator(request, qs) -> Paginator:
+    """split the qs into 6 instances per page"""
+
     paginator = Paginator(qs, 6)
     page_number = request.GET.get("page")
 
@@ -124,6 +126,7 @@ def ticket_create(request):
             ticket.user = request.user
             review.ticket = ticket
 
+            # check if the ticket exists
             if Ticket.objects.filter(slug_title=slugify(ticket.title)):
                 existant_ticket = get_object_or_404(
                     Ticket, slug_title=slugify(ticket.title)
@@ -207,6 +210,7 @@ def ticket_self_review_create(request):
             review.ticket = selfReview.ticket = ticket
             review.self_review = selfReview
 
+            # check if the ticket exists
             if Ticket.objects.filter(slug_title=slugify(ticket.title)):
                 existant_ticket = get_object_or_404(
                     Ticket, slug_title=slugify(ticket.title)
@@ -281,16 +285,18 @@ def self_review_delete(request, review_id):
         return redirect("forbidden_permission")
 
     if request.method == "POST":
+        # update review.overall_rating
         review.delete_self_review_rating()
         review.self_review.delete()
 
+        # it redirects to the tierce review if it exists
         if review.headline:
             messages.success(request, " ✅ Critique supprimée avec succès !")
 
             return redirect("review_detail", review.id)
 
         messages.success(request, " ✅ Critique supprimée avec succès !")
-
+        # else it redirects to the ticket
         return redirect("ticket_detail", review.ticket.id)
 
     return render(request, "review/review_delete.html", {"review": review})

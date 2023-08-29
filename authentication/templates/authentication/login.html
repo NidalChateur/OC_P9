@@ -5,18 +5,20 @@
   {% load static %}
   
   <div class="col-lg-4 offset-lg-0 offset-1 col-10">
-
     <div class="row mt-5 my-2 pb-4">
+
       <form method="POST" class="my-4">
         {% csrf_token %}
         {% bootstrap_form form %}
         <button type="submit" class="btn btn-dark w-100">Se connecter</button>
       </form>
+
       <a href="{% url 'password_reset' %}" class="text-dark">
         Mot de passe oublié ?
       </a>
-    </div>
 
+    </div>
+    
     <div class="row my-4">
       <p class="border-top">
         <a href="{% url 'signup' %}" role="button" class="btn btn-dark w-100 my-5 border-top ">

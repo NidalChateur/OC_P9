@@ -2,9 +2,11 @@
 
 {% block content %}
   {% load django_bootstrap5 %}
+  
   <h1 class="text-center my-4 mb-5">Modification du profil</h1>
     
   <div class="col-12 col-lg-8 offset-lg-2 p-4 border rounded border-light shadow-lg">
+
     <form method="post" enctype="multipart/form-data">
       {% bootstrap_form form %} 
       {% csrf_token %}
@@ -12,5 +14,6 @@
         Enregistrer
       </button>
     </form>
+
   </div>
 {% endblock content %}
